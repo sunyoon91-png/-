@@ -16,8 +16,10 @@ Usage:
       --title "생명보험의 가치" \
       --subtitle "마라톤과\n꼬옥이가\n전하는" \
       --highlight "의" \
-      --font-bold /path/to/Pretendard-Bold.otf \
       --out thumbnail.png
+
+The bold Korean font (Pretendard) ships in fonts/, so --font-bold is only
+needed to override it.
 """
 from __future__ import annotations
 
@@ -37,11 +39,11 @@ DEFAULT_WIDTH = 740
 DEFAULT_HEIGHT = 400
 DEFAULT_BRAND_COLOR = "#0E9B49"
 
-# Common install locations for a bold Korean-capable font, checked in order
-# when --font-bold is not given. None of these are bundled with this repo;
-# install one (Pretendard, Noto Sans KR, NanumSquareRound, Malgun Gothic...)
-# and either put it on one of these paths or pass --font-bold explicitly.
+# Checked in order when --font-bold is not given. The bundled Pretendard
+# (fonts/Pretendard-Bold.otf, next to this script) is tried first; the rest
+# are common system install locations for other Korean-capable bold fonts.
 FONT_SEARCH_PATHS = [
+    str(Path(__file__).resolve().parent / "fonts" / "Pretendard-Bold.otf"),
     "/usr/share/fonts/truetype/pretendard/Pretendard-Bold.otf",
     "/usr/share/fonts/opentype/pretendard/Pretendard-Bold.otf",
     "/usr/share/fonts/truetype/noto/NotoSansKR-Bold.otf",

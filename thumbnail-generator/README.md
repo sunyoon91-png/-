@@ -19,11 +19,10 @@ pip install -r requirements.txt
 
 ### Font
 
-No font is bundled. Install a bold Korean-capable font (Pretendard, Noto Sans KR,
-NanumSquareRound, Malgun Gothic, etc.) and either:
-
-- place it at one of the paths in `FONT_SEARCH_PATHS` in `thumbnail_generator.py`, or
-- pass it explicitly with `--font-bold /path/to/font.otf`
+Pretendard Bold ships in `fonts/Pretendard-Bold.otf` and is used automatically —
+no `--font-bold` needed. Pass `--font-bold /path/to/font.otf` to use a different
+bold Korean-capable font (Noto Sans KR, NanumSquareRound, Malgun Gothic, etc.)
+instead.
 
 ## Usage
 
@@ -33,7 +32,6 @@ python thumbnail_generator.py \
   --title "생명보험의 가치" \
   --subtitle "마라톤과\n꼬옥이가\n전하는" \
   --highlight "의" \
-  --font-bold /path/to/Pretendard-Bold.otf \
   --out thumbnail.png
 ```
 
@@ -51,7 +49,7 @@ the reference style (740x400, `#0E9B49` brand color).
 | `--brand-color` | `#0E9B49` | Hex color for the highlighted keyword |
 | `--out` | `thumbnail.png` | Output file path |
 | `--width` / `--height` | `740` / `400` | Canvas size |
-| `--font-bold` | auto-detected | Font for title (and caption, unless `--font-regular` set) |
+| `--font-bold` | bundled Pretendard | Font for title (and caption, unless `--font-regular` set) |
 | `--font-regular` | = `--font-bold` | Font for the caption only |
 | `--darken` | `0.55` | Background brightness multiplier (0-1, lower = darker) |
 | `--top-gradient-alpha` | `190` | Strength of the top-left dark pocket (0-255) |
@@ -69,7 +67,6 @@ generate_thumbnail(
     title="생명보험의 가치",
     subtitle="마라톤과\n꼬옥이가\n전하는",
     highlight="의",
-    font_bold="/path/to/Pretendard-Bold.otf",
     out_path="thumbnail.png",
 )
 ```

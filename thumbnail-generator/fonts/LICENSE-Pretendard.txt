@@ -1,0 +1,4 @@
+Pretendard-Bold.otf
+Source: https://github.com/orioncactus/pretendard
+License: SIL Open Font License 1.1 (free for commercial and personal use,
+redistribution permitted). See https://github.com/orioncactus/pretendard/blob/main/LICENSE.md
