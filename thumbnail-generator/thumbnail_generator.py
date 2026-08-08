@@ -213,38 +213,74 @@ def draw_outlined_text(
     shadow_blur: int = 10,
     shadow_alpha: int = 140,
     anchor: str | None = None,
-) -> None:
+    letter_spacing: float = 0.0,
+) -> float:
     """Draws `text` at xy onto canvas (RGBA), with a blurred drop shadow
     underneath and a hard black stroke for contrast against busy photos.
     `anchor` follows Pillow's text-anchor codes (e.g. "ls" = left-baseline),
     letting differently-sized segments share a baseline when composed side
-    by side (see draw_title)."""
+    by side (see draw_title). `letter_spacing` is a fraction of each glyph's
+    advance width added between characters (e.g. -0.04 for -4% tracking).
+    Returns the total horizontal advance, so callers can chain runs.
+
+    `anchor` must be a left-based code (e.g. "la", "ls") when letter_spacing
+    is non-zero, since tracking is simulated by drawing glyph-by-glyph from
+    xy[0] going right — a centered/right anchor would misplace the run."""
     w, h = canvas.size
 
     shadow_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    ImageDraw.Draw(shadow_layer).text(
-        (xy[0] + shadow_offset[0], xy[1] + shadow_offset[1]),
-        text,
-        font=font,
-        fill=(0, 0, 0, shadow_alpha),
-        stroke_width=stroke_width,
-        stroke_fill=(0, 0, 0, shadow_alpha),
-        anchor=anchor,
-    )
+    shadow_draw = ImageDraw.Draw(shadow_layer)
+    text_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    text_draw = ImageDraw.Draw(text_layer)
+
+    if letter_spacing == 0.0:
+        shadow_draw.text(
+            (xy[0] + shadow_offset[0], xy[1] + shadow_offset[1]),
+            text,
+            font=font,
+            fill=(0, 0, 0, shadow_alpha),
+            stroke_width=stroke_width,
+            stroke_fill=(0, 0, 0, shadow_alpha),
+            anchor=anchor,
+        )
+        text_draw.text(
+            xy,
+            text,
+            font=font,
+            fill=(*fill, 255),
+            stroke_width=stroke_width,
+            stroke_fill=(*stroke_fill, 255),
+            anchor=anchor,
+        )
+        advance = text_draw.textlength(text, font=font)
+    else:
+        x = float(xy[0])
+        for ch in text:
+            shadow_draw.text(
+                (x + shadow_offset[0], xy[1] + shadow_offset[1]),
+                ch,
+                font=font,
+                fill=(0, 0, 0, shadow_alpha),
+                stroke_width=stroke_width,
+                stroke_fill=(0, 0, 0, shadow_alpha),
+                anchor=anchor,
+            )
+            text_draw.text(
+                (x, xy[1]),
+                ch,
+                font=font,
+                fill=(*fill, 255),
+                stroke_width=stroke_width,
+                stroke_fill=(*stroke_fill, 255),
+                anchor=anchor,
+            )
+            x += text_draw.textlength(ch, font=font) * (1 + letter_spacing)
+        advance = x - xy[0]
+
     shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(shadow_blur))
     canvas.alpha_composite(shadow_layer)
-
-    text_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    ImageDraw.Draw(text_layer).text(
-        xy,
-        text,
-        font=font,
-        fill=(*fill, 255),
-        stroke_width=stroke_width,
-        stroke_fill=(*stroke_fill, 255),
-        anchor=anchor,
-    )
     canvas.alpha_composite(text_layer)
+    return advance
 
 
 def text_size(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, stroke_width: int) -> tuple[int, int]:
@@ -281,6 +317,16 @@ def draw_subtitle(
     return y
 
 
+def tracked_width(
+    draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, letter_spacing: float
+) -> float:
+    """Mirrors draw_outlined_text's glyph-by-glyph advance exactly, so
+    fit_title_size measures the same width that will actually be drawn."""
+    if letter_spacing == 0.0:
+        return draw.textlength(text, font=font)
+    return sum(draw.textlength(ch, font=font) * (1 + letter_spacing) for ch in text)
+
+
 def _title_segments(
     title: str,
     highlight: str | None,
@@ -303,6 +349,7 @@ def fit_title_size(
     min_size: int,
     highlight: str | None,
     highlight_scale: float,
+    letter_spacing: float = 0.0,
 ) -> int:
     """Finds the largest base font size where the title (with its
     highlighted run possibly scaled up by highlight_scale) still fits
@@ -315,7 +362,7 @@ def fit_title_size(
         for text, is_hl in segments:
             seg_size = round(size * highlight_scale) if is_hl else size
             font = resolve_font(font_path, seg_size)
-            total += scratch.textlength(text, font=font)
+            total += tracked_width(scratch, text, font, letter_spacing)
         if total <= max_width:
             return size
         size -= 2
@@ -333,8 +380,8 @@ def draw_title(
     highlight: str | None,
     highlight_color: tuple[int, int, int],
     highlight_scale: float,
+    letter_spacing: float = 0.0,
 ) -> None:
-    scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
     baseline_y = canvas.size[1] - baseline_from_bottom
 
     segments = _title_segments(title, highlight, highlight_color)
@@ -343,7 +390,7 @@ def draw_title(
         seg_size = round(size * highlight_scale) if is_hl else size
         font = resolve_font(font_path, seg_size)
         color = highlight_color if is_hl else (255, 255, 255)
-        draw_outlined_text(
+        x += draw_outlined_text(
             canvas,
             (x, baseline_y),
             text,
@@ -354,11 +401,8 @@ def draw_title(
             shadow_blur=16,
             shadow_alpha=200,
             anchor="ls",
+            letter_spacing=letter_spacing,
         )
-        # Advance by the glyphs' natural run width, not the stroke-inflated
-        # bbox (text_size) — that overhang made the gap after a highlighted
-        # segment look far wider than the surrounding letter spacing.
-        x += scratch.textlength(text, font=font)
 
 
 # ---------------------------------------------------------------------------
@@ -376,6 +420,7 @@ def generate_thumbnail(
     highlight: str | None = None,
     highlight_color: str | None = None,
     highlight_scale: float = 1.0,
+    title_letter_spacing: float = 0.0,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -425,6 +470,7 @@ def generate_thumbnail(
         min_size=title_min_size,
         highlight=highlight,
         highlight_scale=highlight_scale,
+        letter_spacing=title_letter_spacing,
     )
     draw_title(
         canvas,
@@ -437,6 +483,7 @@ def generate_thumbnail(
         highlight=highlight,
         highlight_color=highlight_rgb,
         highlight_scale=highlight_scale,
+        letter_spacing=title_letter_spacing,
     )
 
     canvas.convert("RGB").save(out_path, quality=95)
@@ -468,6 +515,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=float,
         default=1.0,
         help="Font-size multiplier for the --highlight run, e.g. 1.3 for 30%% bigger",
+    )
+    parser.add_argument(
+        "--title-letter-spacing",
+        type=float,
+        default=0.0,
+        help="Tracking for the title, as a fraction of glyph width, e.g. -0.04 for -4%%",
     )
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
@@ -504,6 +557,7 @@ def main(argv: list[str] | None = None) -> int:
             highlight=args.highlight,
             highlight_color=args.highlight_color,
             highlight_scale=args.highlight_scale,
+            title_letter_spacing=args.title_letter_spacing,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
