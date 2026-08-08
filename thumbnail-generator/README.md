@@ -57,6 +57,7 @@ the reference style (740x400, `#0E9B49` brand color).
 | `--darken` | `0.78` | Background brightness multiplier (0-1, lower = darker) |
 | `--top-gradient-alpha` | `130` | Strength of the top-left dark pocket (0-255) |
 | `--bottom-gradient-alpha` | `165` | Strength of the bottom dark rise (0-255) |
+| `--protect-highlights` | `0.0` | 0-1: shield already-bright areas (a white sign, a spotlit subject) from the darkening overlays, e.g. `0.6` |
 | `--margin` | 5% of width | Left margin shared by caption and title |
 | `--subtitle-size` / `--title-max-size` / `--title-min-size` | scaled to height | Font sizes in px |
 

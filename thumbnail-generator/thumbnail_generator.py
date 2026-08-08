@@ -156,10 +156,11 @@ def build_background(
     darken: float,
     top_gradient_alpha: int,
     bottom_gradient_alpha: int,
+    highlight_protect: float = 0.0,
 ) -> Image.Image:
-    bg = Image.open(bg_path)
-    bg = cover_crop(bg, width, height)
-    bg = ImageEnhance.Brightness(bg).enhance(darken)
+    original = Image.open(bg_path)
+    original = cover_crop(original, width, height)
+    bg = ImageEnhance.Brightness(original).enhance(darken)
     bg = ImageEnhance.Color(bg).enhance(0.92)
     bg = bg.convert("RGBA")
 
@@ -181,6 +182,15 @@ def build_background(
     )
     # Combine by taking the max alpha at each pixel (darker of the two wins).
     combined_mask = ImageChops.lighter(top_mask, bottom_mask)
+
+    if highlight_protect > 0:
+        # Scale the darkening down wherever the source photo is already
+        # bright (e.g. a white sign or a spotlit subject), so that object
+        # stays closer to its original brightness instead of being darkened
+        # by the same amount as its dim surroundings.
+        luminance = original.convert("L")
+        keep_fraction = luminance.point(lambda v: round(255 - highlight_protect * v))
+        combined_mask = ImageChops.multiply(combined_mask, keep_fraction)
 
     black = Image.new("RGBA", (width, height), (0, 0, 0, 255))
     bg = Image.composite(black, bg, combined_mask)
@@ -371,6 +381,7 @@ def generate_thumbnail(
     darken: float = 0.78,
     top_gradient_alpha: int = 130,
     bottom_gradient_alpha: int = 165,
+    protect_highlights: float = 0.0,
     margin: int | None = None,
     subtitle_size: int | None = None,
     title_max_size: int | None = None,
@@ -383,7 +394,13 @@ def generate_thumbnail(
     highlight_rgb = hex_to_rgb(highlight_color or brand_color)
 
     canvas = build_background(
-        bg_path, width, height, darken, top_gradient_alpha, bottom_gradient_alpha
+        bg_path,
+        width,
+        height,
+        darken,
+        top_gradient_alpha,
+        bottom_gradient_alpha,
+        highlight_protect=protect_highlights,
     )
 
     if subtitle:
@@ -459,6 +476,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--darken", type=float, default=0.78, help="Background brightness factor, 0-1")
     parser.add_argument("--top-gradient-alpha", type=int, default=130, help="0-255")
     parser.add_argument("--bottom-gradient-alpha", type=int, default=165, help="0-255")
+    parser.add_argument(
+        "--protect-highlights",
+        type=float,
+        default=0.0,
+        help="0-1: shield already-bright areas of the photo (a white sign, a spotlit "
+        "subject) from the darkening overlays, e.g. 0.6",
+    )
     parser.add_argument("--margin", type=int, default=None)
     parser.add_argument("--subtitle-size", type=int, default=None)
     parser.add_argument("--title-max-size", type=int, default=None)
@@ -485,6 +509,7 @@ def main(argv: list[str] | None = None) -> int:
             darken=args.darken,
             top_gradient_alpha=args.top_gradient_alpha,
             bottom_gradient_alpha=args.bottom_gradient_alpha,
+            protect_highlights=args.protect_highlights,
             margin=args.margin,
             subtitle_size=args.subtitle_size,
             title_max_size=args.title_max_size,
