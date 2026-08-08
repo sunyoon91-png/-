@@ -381,7 +381,16 @@ def draw_title(
     highlight_color: tuple[int, int, int],
     highlight_scale: float,
     letter_spacing: float = 0.0,
+    stroke_matches_fill: bool = False,
+    shadow_offset: tuple[int, int] = (0, 12),
+    shadow_blur: int = 20,
+    shadow_alpha: int = 255,
 ) -> None:
+    """`stroke_matches_fill` draws the stroke in the same color as each
+    segment's fill instead of black — it fattens the glyphs (faux-bold, for
+    when a heavier font weight isn't available) without adding a visible
+    outline, which is the look to reach for once `stroke_width=0` (a pure
+    shadow silhouette) reads too thin."""
     baseline_y = canvas.size[1] - baseline_from_bottom
 
     segments = _title_segments(title, highlight, highlight_color)
@@ -397,9 +406,10 @@ def draw_title(
             font,
             fill=color,
             stroke_width=stroke_width,
-            shadow_offset=(0, 10),
-            shadow_blur=16,
-            shadow_alpha=200,
+            stroke_fill=color if stroke_matches_fill else (0, 0, 0),
+            shadow_offset=shadow_offset,
+            shadow_blur=shadow_blur,
+            shadow_alpha=shadow_alpha,
             anchor="ls",
             letter_spacing=letter_spacing,
         )
@@ -422,6 +432,7 @@ def generate_thumbnail(
     highlight_scale: float = 1.0,
     title_letter_spacing: float = 0.0,
     title_stroke_width: int | None = None,
+    title_stroke_matches_fill: bool = False,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -486,6 +497,7 @@ def generate_thumbnail(
         highlight_color=highlight_rgb,
         highlight_scale=highlight_scale,
         letter_spacing=title_letter_spacing,
+        stroke_matches_fill=title_stroke_matches_fill,
     )
 
     canvas.convert("RGB").save(out_path, quality=95)
@@ -528,8 +540,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--title-stroke-width",
         type=int,
         default=None,
-        help="Black outline thickness around the title, in px. 0 disables it (shadow-only look). "
+        help="Outline thickness around the title, in px (its color is set by "
+        "--title-stroke-matches-fill). 0 disables it entirely (shadow-only look). "
         "Defaults to a thin auto-sized outline.",
+    )
+    parser.add_argument(
+        "--title-stroke-matches-fill",
+        action="store_true",
+        help="Draw the title's outline in the same color as its fill instead of black — "
+        "fattens the glyphs (faux-bold) without a visible outline.",
     )
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
@@ -568,6 +587,7 @@ def main(argv: list[str] | None = None) -> int:
             highlight_scale=args.highlight_scale,
             title_letter_spacing=args.title_letter_spacing,
             title_stroke_width=args.title_stroke_width,
+            title_stroke_matches_fill=args.title_stroke_matches_fill,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
