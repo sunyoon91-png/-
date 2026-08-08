@@ -322,7 +322,10 @@ def draw_title(
             shadow_offset=(0, 8),
             shadow_blur=12,
         )
-        w, _ = text_size(scratch, text, font, stroke_width)
+        # Advance by the glyphs' natural run width, not the stroke-inflated
+        # bbox (text_size) — that overhang made the gap after a highlighted
+        # segment look far wider than the surrounding letter spacing.
+        w = scratch.textlength(text, font=font)
         x += w
 
 
@@ -341,9 +344,9 @@ def generate_thumbnail(
     highlight: str | None = None,
     font_bold: str | None = None,
     font_regular: str | None = None,
-    darken: float = 0.55,
-    top_gradient_alpha: int = 190,
-    bottom_gradient_alpha: int = 215,
+    darken: float = 0.78,
+    top_gradient_alpha: int = 130,
+    bottom_gradient_alpha: int = 165,
     margin: int | None = None,
     subtitle_size: int | None = None,
     title_max_size: int | None = None,
@@ -417,9 +420,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--font-regular", default=None, help="Path to the caption font (defaults to --font-bold)"
     )
-    parser.add_argument("--darken", type=float, default=0.55, help="Background brightness factor, 0-1")
-    parser.add_argument("--top-gradient-alpha", type=int, default=190, help="0-255")
-    parser.add_argument("--bottom-gradient-alpha", type=int, default=215, help="0-255")
+    parser.add_argument("--darken", type=float, default=0.78, help="Background brightness factor, 0-1")
+    parser.add_argument("--top-gradient-alpha", type=int, default=130, help="0-255")
+    parser.add_argument("--bottom-gradient-alpha", type=int, default=165, help="0-255")
     parser.add_argument("--margin", type=int, default=None)
     parser.add_argument("--subtitle-size", type=int, default=None)
     parser.add_argument("--title-max-size", type=int, default=None)
