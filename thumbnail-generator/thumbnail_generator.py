@@ -43,6 +43,7 @@ DEFAULT_BRAND_COLOR = "#0E9B49"
 # (fonts/Pretendard-Bold.otf, next to this script) is tried first; the rest
 # are common system install locations for other Korean-capable bold fonts.
 FONT_SEARCH_PATHS = [
+    str(Path(__file__).resolve().parent / "fonts" / "Pretendard-Black.otf"),
     str(Path(__file__).resolve().parent / "fonts" / "Pretendard-Bold.otf"),
     "/usr/share/fonts/truetype/pretendard/Pretendard-Bold.otf",
     "/usr/share/fonts/opentype/pretendard/Pretendard-Bold.otf",
@@ -430,7 +431,7 @@ def generate_thumbnail(
     highlight: str | None = None,
     highlight_color: str | None = None,
     highlight_scale: float = 1.0,
-    title_letter_spacing: float = 0.0,
+    title_letter_spacing: float = -0.03,
     title_stroke_width: int | None = None,
     title_stroke_matches_fill: bool = False,
     font_bold: str | None = None,
@@ -533,8 +534,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--title-letter-spacing",
         type=float,
-        default=0.0,
-        help="Tracking for the title, as a fraction of glyph width, e.g. -0.04 for -4%%",
+        default=-0.03,
+        help="Tracking for the title, as a fraction of glyph width, e.g. -0.04 for -4%%. "
+        "Note Pretendard Black starts overlapping past roughly -0.04.",
     )
     parser.add_argument(
         "--title-stroke-width",

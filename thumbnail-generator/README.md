@@ -3,12 +3,13 @@
 Reproduces a fixed thumbnail style from any background photo + title text:
 
 - 740x400px canvas (configurable)
-- Background photo cover-cropped and darkened
+- Background photo cover-cropped and darkened, with already-bright subjects
+  (a white sign, a spotlit face) optionally shielded from the darkening
 - Dark radial gradient anchored top-left (seats the small caption)
 - Dark linear gradient rising from the bottom (seats the big title)
 - Small bold caption block, top-left, white with black outline + drop shadow
-- Large bold title, bottom-left, white with black outline + drop shadow,
-  auto-shrunk to fit the canvas width
+- Large title, bottom-left, tight tracking + thin black outline + a dense
+  drop shadow, auto-shrunk to fit the canvas width
 - Optional keyword inside the title rendered in its own color and size (brand
   color / `#0E9B49` and 1x by default), sharing a baseline with the rest of the title
 
@@ -20,10 +21,12 @@ pip install -r requirements.txt
 
 ### Font
 
-Pretendard Bold ships in `fonts/Pretendard-Bold.otf` and is used automatically —
-no `--font-bold` needed. Pass `--font-bold /path/to/font.otf` to use a different
-bold Korean-capable font (Noto Sans KR, NanumSquareRound, Malgun Gothic, etc.)
-instead.
+Pretendard Black ships in `fonts/Pretendard-Black.otf` and is used automatically —
+no `--font-bold` needed (Pretendard Bold is also bundled as a fallback). Pass
+`--font-bold /path/to/font.otf` to use a different Korean-capable font (Noto
+Sans KR, NanumSquareRound, Malgun Gothic, etc.) instead — note the default
+`--title-letter-spacing` (-3%) was tuned for Black's especially thick strokes,
+so loosen it back toward 0 for a lighter-weight font.
 
 ## Usage
 
@@ -58,6 +61,9 @@ the reference style (740x400, `#0E9B49` brand color).
 | `--top-gradient-alpha` | `130` | Strength of the top-left dark pocket (0-255) |
 | `--bottom-gradient-alpha` | `165` | Strength of the bottom dark rise (0-255) |
 | `--protect-highlights` | `0.0` | 0-1: shield already-bright areas (a white sign, a spotlit subject) from the darkening overlays, e.g. `0.6` |
+| `--title-letter-spacing` | `-0.03` | Title tracking, as a fraction of glyph width. Pretendard Black starts overlapping past roughly `-0.04` |
+| `--title-stroke-width` | thin, auto-sized | Title outline thickness in px; `0` disables it (shadow-only look) |
+| `--title-stroke-matches-fill` | off | Outline color matches each segment's fill instead of black — fattens the glyphs (faux-bold) without a visible outline |
 | `--margin` | 5% of width | Left margin shared by caption and title |
 | `--subtitle-size` / `--title-max-size` / `--title-min-size` | scaled to height | Font sizes in px |
 
