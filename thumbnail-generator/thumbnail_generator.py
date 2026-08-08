@@ -319,8 +319,9 @@ def draw_title(
             font,
             fill=color,
             stroke_width=stroke_width,
-            shadow_offset=(0, 8),
-            shadow_blur=12,
+            shadow_offset=(0, 10),
+            shadow_blur=16,
+            shadow_alpha=200,
         )
         # Advance by the glyphs' natural run width, not the stroke-inflated
         # bbox (text_size) — that overhang made the gap after a highlighted
@@ -372,10 +373,10 @@ def generate_thumbnail(
             margin_x=margin,
             top_y=round(height * 0.08),
             line_gap=round(subtitle_size * 0.18),
-            stroke_width=max(2, round(subtitle_size * 0.06)),
+            stroke_width=max(1, round(subtitle_size * 0.035)),
         )
 
-    title_stroke_width = max(3, round(title_max_size * 0.05))
+    title_stroke_width = max(2, round(title_max_size * 0.025))
     title_font = fit_title_font(
         font_bold,
         title,
