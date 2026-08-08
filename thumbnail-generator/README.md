@@ -9,7 +9,8 @@ Reproduces a fixed thumbnail style from any background photo + title text:
 - Small bold caption block, top-left, white with black outline + drop shadow
 - Large bold title, bottom-left, white with black outline + drop shadow,
   auto-shrunk to fit the canvas width
-- Optional keyword inside the title rendered in the brand color (`#0E9B49` by default)
+- Optional keyword inside the title rendered in its own color and size (brand
+  color / `#0E9B49` and 1x by default), sharing a baseline with the rest of the title
 
 ## Setup
 
@@ -45,15 +46,17 @@ the reference style (740x400, `#0E9B49` brand color).
 | `--bg` | (required) | Background image path |
 | `--title` | (required) | Large bottom title |
 | `--subtitle` | none | Small top-left caption; `\n` for line breaks |
-| `--highlight` | none | Substring of `--title` to color with the brand color |
-| `--brand-color` | `#0E9B49` | Hex color for the highlighted keyword |
+| `--highlight` | none | Substring of `--title` to color/size differently |
+| `--highlight-color` | = `--brand-color` | Hex color for the highlighted run |
+| `--highlight-scale` | `1.0` | Font-size multiplier for the highlighted run, e.g. `1.35` |
+| `--brand-color` | `#0E9B49` | Fallback hex color for `--highlight` when `--highlight-color` isn't set |
 | `--out` | `thumbnail.png` | Output file path |
 | `--width` / `--height` | `740` / `400` | Canvas size |
 | `--font-bold` | bundled Pretendard | Font for title (and caption, unless `--font-regular` set) |
 | `--font-regular` | = `--font-bold` | Font for the caption only |
-| `--darken` | `0.55` | Background brightness multiplier (0-1, lower = darker) |
-| `--top-gradient-alpha` | `190` | Strength of the top-left dark pocket (0-255) |
-| `--bottom-gradient-alpha` | `215` | Strength of the bottom dark rise (0-255) |
+| `--darken` | `0.78` | Background brightness multiplier (0-1, lower = darker) |
+| `--top-gradient-alpha` | `130` | Strength of the top-left dark pocket (0-255) |
+| `--bottom-gradient-alpha` | `165` | Strength of the bottom dark rise (0-255) |
 | `--margin` | 5% of width | Left margin shared by caption and title |
 | `--subtitle-size` / `--title-max-size` / `--title-min-size` | scaled to height | Font sizes in px |
 

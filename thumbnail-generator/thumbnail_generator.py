@@ -202,9 +202,13 @@ def draw_outlined_text(
     shadow_offset: tuple[int, int] = (0, 6),
     shadow_blur: int = 10,
     shadow_alpha: int = 140,
+    anchor: str | None = None,
 ) -> None:
     """Draws `text` at xy onto canvas (RGBA), with a blurred drop shadow
-    underneath and a hard black stroke for contrast against busy photos."""
+    underneath and a hard black stroke for contrast against busy photos.
+    `anchor` follows Pillow's text-anchor codes (e.g. "ls" = left-baseline),
+    letting differently-sized segments share a baseline when composed side
+    by side (see draw_title)."""
     w, h = canvas.size
 
     shadow_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
@@ -215,6 +219,7 @@ def draw_outlined_text(
         fill=(0, 0, 0, shadow_alpha),
         stroke_width=stroke_width,
         stroke_fill=(0, 0, 0, shadow_alpha),
+        anchor=anchor,
     )
     shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(shadow_blur))
     canvas.alpha_composite(shadow_layer)
@@ -227,6 +232,7 @@ def draw_outlined_text(
         fill=(*fill, 255),
         stroke_width=stroke_width,
         stroke_fill=(*stroke_fill, 255),
+        anchor=anchor,
     )
     canvas.alpha_composite(text_layer)
 
@@ -265,56 +271,71 @@ def draw_subtitle(
     return y
 
 
-def fit_title_font(
+def _title_segments(
+    title: str,
+    highlight: str | None,
+    highlight_color: tuple[int, int, int],
+) -> list[tuple[str, bool]]:
+    """Splits title into (text, is_highlight) runs around the first
+    occurrence of `highlight`."""
+    if highlight and highlight in title:
+        before, _, after = title.partition(highlight)
+        segments = [(before, False), (highlight, True), (after, False)]
+        return [(s, is_hl) for s, is_hl in segments if s]
+    return [(title, False)]
+
+
+def fit_title_size(
     font_path: str | None,
     title: str,
     max_width: int,
     max_size: int,
     min_size: int,
-    stroke_width: int,
-) -> ImageFont.FreeTypeFont:
+    highlight: str | None,
+    highlight_scale: float,
+) -> int:
+    """Finds the largest base font size where the title (with its
+    highlighted run possibly scaled up by highlight_scale) still fits
+    max_width, sharing a common baseline."""
     scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    segments = _title_segments(title, highlight, (0, 0, 0))
     size = max_size
     while size > min_size:
-        font = resolve_font(font_path, size)
-        w, _ = text_size(scratch, title, font, stroke_width)
-        if w <= max_width:
-            return font
+        total = 0.0
+        for text, is_hl in segments:
+            seg_size = round(size * highlight_scale) if is_hl else size
+            font = resolve_font(font_path, seg_size)
+            total += scratch.textlength(text, font=font)
+        if total <= max_width:
+            return size
         size -= 2
-    return resolve_font(font_path, min_size)
+    return min_size
 
 
 def draw_title(
     canvas: Image.Image,
     title: str,
-    font: ImageFont.FreeTypeFont,
+    font_path: str | None,
+    size: int,
     margin_x: int,
     baseline_from_bottom: int,
     stroke_width: int,
     highlight: str | None,
-    brand_color: tuple[int, int, int],
+    highlight_color: tuple[int, int, int],
+    highlight_scale: float,
 ) -> None:
     scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
-    _, h = text_size(scratch, title, font, stroke_width)
-    y = canvas.size[1] - baseline_from_bottom - h
+    baseline_y = canvas.size[1] - baseline_from_bottom
 
-    segments: list[tuple[str, tuple[int, int, int]]]
-    if highlight and highlight in title:
-        before, _, after = title.partition(highlight)
-        segments = [
-            (before, (255, 255, 255)),
-            (highlight, brand_color),
-            (after, (255, 255, 255)),
-        ]
-        segments = [(s, c) for s, c in segments if s]
-    else:
-        segments = [(title, (255, 255, 255))]
-
+    segments = _title_segments(title, highlight, highlight_color)
     x = margin_x
-    for text, color in segments:
+    for text, is_hl in segments:
+        seg_size = round(size * highlight_scale) if is_hl else size
+        font = resolve_font(font_path, seg_size)
+        color = highlight_color if is_hl else (255, 255, 255)
         draw_outlined_text(
             canvas,
-            (x, y),
+            (x, baseline_y),
             text,
             font,
             fill=color,
@@ -322,12 +343,12 @@ def draw_title(
             shadow_offset=(0, 10),
             shadow_blur=16,
             shadow_alpha=200,
+            anchor="ls",
         )
         # Advance by the glyphs' natural run width, not the stroke-inflated
         # bbox (text_size) — that overhang made the gap after a highlighted
         # segment look far wider than the surrounding letter spacing.
-        w = scratch.textlength(text, font=font)
-        x += w
+        x += scratch.textlength(text, font=font)
 
 
 # ---------------------------------------------------------------------------
@@ -343,6 +364,8 @@ def generate_thumbnail(
     height: int = DEFAULT_HEIGHT,
     brand_color: str = DEFAULT_BRAND_COLOR,
     highlight: str | None = None,
+    highlight_color: str | None = None,
+    highlight_scale: float = 1.0,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -357,7 +380,7 @@ def generate_thumbnail(
     subtitle_size = subtitle_size or round(height * 0.10)
     title_max_size = title_max_size or round(height * 0.24)
     title_min_size = title_min_size or round(height * 0.10)
-    brand_rgb = hex_to_rgb(brand_color)
+    highlight_rgb = hex_to_rgb(highlight_color or brand_color)
 
     canvas = build_background(
         bg_path, width, height, darken, top_gradient_alpha, bottom_gradient_alpha
@@ -377,23 +400,26 @@ def generate_thumbnail(
         )
 
     title_stroke_width = max(2, round(title_max_size * 0.025))
-    title_font = fit_title_font(
+    title_size = fit_title_size(
         font_bold,
         title,
         max_width=width - 2 * margin,
         max_size=title_max_size,
         min_size=title_min_size,
-        stroke_width=title_stroke_width,
+        highlight=highlight,
+        highlight_scale=highlight_scale,
     )
     draw_title(
         canvas,
         title,
-        title_font,
+        font_bold,
+        title_size,
         margin_x=margin,
-        baseline_from_bottom=round(height * 0.08),
+        baseline_from_bottom=round(height * 0.10),
         stroke_width=title_stroke_width,
         highlight=highlight,
-        brand_color=brand_rgb,
+        highlight_color=highlight_rgb,
+        highlight_scale=highlight_scale,
     )
 
     canvas.convert("RGB").save(out_path, quality=95)
@@ -415,7 +441,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=DEFAULT_HEIGHT)
     parser.add_argument("--brand-color", default=DEFAULT_BRAND_COLOR, help="Hex color, e.g. #0E9B49")
     parser.add_argument(
-        "--highlight", default=None, help="Substring inside --title to render in the brand color"
+        "--highlight", default=None, help="Substring inside --title to render in the highlight color"
+    )
+    parser.add_argument(
+        "--highlight-color", default=None, help="Hex color for --highlight (defaults to --brand-color)"
+    )
+    parser.add_argument(
+        "--highlight-scale",
+        type=float,
+        default=1.0,
+        help="Font-size multiplier for the --highlight run, e.g. 1.3 for 30%% bigger",
     )
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
@@ -443,6 +478,8 @@ def main(argv: list[str] | None = None) -> int:
             height=args.height,
             brand_color=args.brand_color,
             highlight=args.highlight,
+            highlight_color=args.highlight_color,
+            highlight_scale=args.highlight_scale,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
