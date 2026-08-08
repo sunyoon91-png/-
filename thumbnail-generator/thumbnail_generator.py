@@ -421,6 +421,7 @@ def generate_thumbnail(
     highlight_color: str | None = None,
     highlight_scale: float = 1.0,
     title_letter_spacing: float = 0.0,
+    title_stroke_width: int | None = None,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -461,7 +462,8 @@ def generate_thumbnail(
             stroke_width=max(1, round(subtitle_size * 0.035)),
         )
 
-    title_stroke_width = max(2, round(title_max_size * 0.025))
+    if title_stroke_width is None:
+        title_stroke_width = max(2, round(title_max_size * 0.025))
     title_size = fit_title_size(
         font_bold,
         title,
@@ -522,6 +524,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=0.0,
         help="Tracking for the title, as a fraction of glyph width, e.g. -0.04 for -4%%",
     )
+    parser.add_argument(
+        "--title-stroke-width",
+        type=int,
+        default=None,
+        help="Black outline thickness around the title, in px. 0 disables it (shadow-only look). "
+        "Defaults to a thin auto-sized outline.",
+    )
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
         "--font-regular", default=None, help="Path to the caption font (defaults to --font-bold)"
@@ -558,6 +567,7 @@ def main(argv: list[str] | None = None) -> int:
             highlight_color=args.highlight_color,
             highlight_scale=args.highlight_scale,
             title_letter_spacing=args.title_letter_spacing,
+            title_stroke_width=args.title_stroke_width,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
