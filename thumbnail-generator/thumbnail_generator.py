@@ -344,7 +344,7 @@ def _title_segments(
 
 def fit_title_size(
     font_path: str | None,
-    title: str,
+    lines: list[str],
     max_width: int,
     max_size: int,
     min_size: int,
@@ -352,19 +352,23 @@ def fit_title_size(
     highlight_scale: float,
     letter_spacing: float = 0.0,
 ) -> int:
-    """Finds the largest base font size where the title (with its
+    """Finds the largest base font size where every title line (with its
     highlighted run possibly scaled up by highlight_scale) still fits
-    max_width, sharing a common baseline."""
+    max_width, sharing a common baseline within its own line."""
     scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
-    segments = _title_segments(title, highlight, (0, 0, 0))
     size = max_size
     while size > min_size:
-        total = 0.0
-        for text, is_hl in segments:
-            seg_size = round(size * highlight_scale) if is_hl else size
-            font = resolve_font(font_path, seg_size)
-            total += tracked_width(scratch, text, font, letter_spacing)
-        if total <= max_width:
+        fits = True
+        for line in lines:
+            total = 0.0
+            for text, is_hl in _title_segments(line, highlight, (0, 0, 0)):
+                seg_size = round(size * highlight_scale) if is_hl else size
+                font = resolve_font(font_path, seg_size)
+                total += tracked_width(scratch, text, font, letter_spacing)
+            if total > max_width:
+                fits = False
+                break
+        if fits:
             return size
         size -= 2
     return min_size
@@ -372,7 +376,7 @@ def fit_title_size(
 
 def draw_title(
     canvas: Image.Image,
-    title: str,
+    lines: list[str],
     font_path: str | None,
     size: int,
     margin_x: int,
@@ -386,34 +390,42 @@ def draw_title(
     shadow_offset: tuple[int, int] = (0, 12),
     shadow_blur: int = 20,
     shadow_alpha: int = 255,
+    line_gap: int | None = None,
 ) -> None:
-    """`stroke_matches_fill` draws the stroke in the same color as each
-    segment's fill instead of black — it fattens the glyphs (faux-bold, for
-    when a heavier font weight isn't available) without adding a visible
-    outline, which is the look to reach for once `stroke_width=0` (a pure
-    shadow silhouette) reads too thin."""
-    baseline_y = canvas.size[1] - baseline_from_bottom
+    """Draws `lines` stacked upward from `baseline_from_bottom`, each line
+    laid out independently (its own highlight run, sharing a baseline within
+    that line — see draw_outlined_text). `stroke_matches_fill` draws the
+    outline in the same color as each segment's fill instead of black —
+    fattens the glyphs (faux-bold, for when a heavier weight isn't available)
+    without a visible outline, the look to reach for once `stroke_width=0`
+    (a pure shadow silhouette) reads too thin."""
+    base_font = resolve_font(font_path, size)
+    ascent, descent = base_font.getmetrics()
+    pitch = ascent + descent + (line_gap if line_gap is not None else round(size * 0.12))
+    n = len(lines)
+    last_baseline = canvas.size[1] - baseline_from_bottom
+    baselines = [last_baseline - pitch * (n - 1 - i) for i in range(n)]
 
-    segments = _title_segments(title, highlight, highlight_color)
-    x = margin_x
-    for text, is_hl in segments:
-        seg_size = round(size * highlight_scale) if is_hl else size
-        font = resolve_font(font_path, seg_size)
-        color = highlight_color if is_hl else (255, 255, 255)
-        x += draw_outlined_text(
-            canvas,
-            (x, baseline_y),
-            text,
-            font,
-            fill=color,
-            stroke_width=stroke_width,
-            stroke_fill=color if stroke_matches_fill else (0, 0, 0),
-            shadow_offset=shadow_offset,
-            shadow_blur=shadow_blur,
-            shadow_alpha=shadow_alpha,
-            anchor="ls",
-            letter_spacing=letter_spacing,
-        )
+    for line, baseline_y in zip(lines, baselines):
+        x = margin_x
+        for text, is_hl in _title_segments(line, highlight, highlight_color):
+            seg_size = round(size * highlight_scale) if is_hl else size
+            font = resolve_font(font_path, seg_size)
+            color = highlight_color if is_hl else (255, 255, 255)
+            x += draw_outlined_text(
+                canvas,
+                (x, baseline_y),
+                text,
+                font,
+                fill=color,
+                stroke_width=stroke_width,
+                stroke_fill=color if stroke_matches_fill else (0, 0, 0),
+                shadow_offset=shadow_offset,
+                shadow_blur=shadow_blur,
+                shadow_alpha=shadow_alpha,
+                anchor="ls",
+                letter_spacing=letter_spacing,
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -477,9 +489,10 @@ def generate_thumbnail(
 
     if title_stroke_width is None:
         title_stroke_width = max(2, round(title_max_size * 0.025))
+    title_lines = title.split("\n")
     title_size = fit_title_size(
         font_bold,
-        title,
+        title_lines,
         max_width=width - 2 * margin,
         max_size=title_max_size,
         min_size=title_min_size,
@@ -489,7 +502,7 @@ def generate_thumbnail(
     )
     draw_title(
         canvas,
-        title,
+        title_lines,
         font_bold,
         title_size,
         margin_x=margin,
@@ -510,7 +523,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         description="Generate a branded video thumbnail from a background photo + title.",
     )
     parser.add_argument("--bg", required=True, help="Path to background image")
-    parser.add_argument("--title", required=True, help="Large bottom title text")
+    parser.add_argument(
+        "--title",
+        required=True,
+        help=r"Large bottom title text. Use \n to force a line break, e.g. '광화문글판은\n어떻게 만들어질까요?' — "
+        "without one it stays single-line and auto-shrinks to fit the width.",
+    )
     parser.add_argument(
         "--subtitle",
         default=None,
@@ -586,7 +604,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         generate_thumbnail(
             bg_path=args.bg,
-            title=args.title,
+            title=args.title.replace("\\n", "\n"),
             subtitle=args.subtitle.replace("\\n", "\n") if args.subtitle else None,
             out_path=args.out,
             width=args.width,
