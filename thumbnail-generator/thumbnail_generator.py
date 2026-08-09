@@ -88,9 +88,11 @@ def cover_crop(
 ) -> Image.Image:
     """Resize+crop so img fills target_w x target_h exactly, no distortion.
     `focus_y` picks which part of the source survives a vertical crop: 0.0
-    keeps the top (crops from the bottom), 1.0 keeps the bottom (crops from
-    the top), 0.5 is centered. Only affects images taller than the target
-    aspect ratio — width is always centered."""
+    keeps the top (crops away the bottom), which pushes source content DOWN
+    toward the frame's bottom edge; 1.0 keeps the bottom (crops away the
+    top), pushing source content UP toward the top edge; 0.5 is centered.
+    Only affects images taller than the target aspect ratio — width is
+    always centered."""
     img = img.convert("RGB")
     src_w, src_h = img.size
     src_ratio = src_w / src_h
@@ -606,8 +608,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=float,
         default=0.5,
         help="0-1: which part of the background photo survives the vertical crop. "
-        "0 keeps the top (crops from the bottom, shifting the photo's content up "
-        "the frame), 1 keeps the bottom, 0.5 is centered.",
+        "Higher values crop away more of the top, pushing the photo's content UP "
+        "toward the frame's top edge (e.g. 1.0 to lift a subject away from bottom "
+        "title text); 0 keeps the top and pushes content down; 0.5 is centered.",
     )
     parser.add_argument("--margin", type=int, default=None)
     parser.add_argument("--subtitle-size", type=int, default=None)
