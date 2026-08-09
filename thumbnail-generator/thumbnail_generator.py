@@ -83,8 +83,14 @@ def hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
 # Background prep: cover-crop + darken + directional gradients
 # ---------------------------------------------------------------------------
 
-def cover_crop(img: Image.Image, target_w: int, target_h: int) -> Image.Image:
-    """Resize+center-crop so img fills target_w x target_h exactly, no distortion."""
+def cover_crop(
+    img: Image.Image, target_w: int, target_h: int, focus_y: float = 0.5
+) -> Image.Image:
+    """Resize+crop so img fills target_w x target_h exactly, no distortion.
+    `focus_y` picks which part of the source survives a vertical crop: 0.0
+    keeps the top (crops from the bottom), 1.0 keeps the bottom (crops from
+    the top), 0.5 is centered. Only affects images taller than the target
+    aspect ratio — width is always centered."""
     img = img.convert("RGB")
     src_w, src_h = img.size
     src_ratio = src_w / src_h
@@ -99,7 +105,7 @@ def cover_crop(img: Image.Image, target_w: int, target_h: int) -> Image.Image:
 
     img = img.resize((new_w, new_h), Image.LANCZOS)
     left = (new_w - target_w) // 2
-    top = (new_h - target_h) // 2
+    top = round((new_h - target_h) * focus_y)
     return img.crop((left, top, left + target_w, top + target_h))
 
 
@@ -158,9 +164,10 @@ def build_background(
     top_gradient_alpha: int,
     bottom_gradient_alpha: int,
     highlight_protect: float = 0.0,
+    bg_focus_y: float = 0.5,
 ) -> Image.Image:
     original = Image.open(bg_path)
-    original = cover_crop(original, width, height)
+    original = cover_crop(original, width, height, focus_y=bg_focus_y)
     bg = ImageEnhance.Brightness(original).enhance(darken)
     bg = ImageEnhance.Color(bg).enhance(0.92)
     bg = bg.convert("RGBA")
@@ -453,6 +460,7 @@ def generate_thumbnail(
     top_gradient_alpha: int = 130,
     bottom_gradient_alpha: int = 165,
     protect_highlights: float = 0.0,
+    bg_focus_y: float = 0.5,
     margin: int | None = None,
     subtitle_size: int | None = None,
     title_max_size: int | None = None,
@@ -472,6 +480,7 @@ def generate_thumbnail(
         top_gradient_alpha,
         bottom_gradient_alpha,
         highlight_protect=protect_highlights,
+        bg_focus_y=bg_focus_y,
     )
 
     if subtitle:
@@ -592,6 +601,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="0-1: shield already-bright areas of the photo (a white sign, a spotlit "
         "subject) from the darkening overlays, e.g. 0.6",
     )
+    parser.add_argument(
+        "--bg-focus-y",
+        type=float,
+        default=0.5,
+        help="0-1: which part of the background photo survives the vertical crop. "
+        "0 keeps the top (crops from the bottom, shifting the photo's content up "
+        "the frame), 1 keeps the bottom, 0.5 is centered.",
+    )
     parser.add_argument("--margin", type=int, default=None)
     parser.add_argument("--subtitle-size", type=int, default=None)
     parser.add_argument("--title-max-size", type=int, default=None)
@@ -623,6 +640,7 @@ def main(argv: list[str] | None = None) -> int:
             top_gradient_alpha=args.top_gradient_alpha,
             bottom_gradient_alpha=args.bottom_gradient_alpha,
             protect_highlights=args.protect_highlights,
+            bg_focus_y=args.bg_focus_y,
             margin=args.margin,
             subtitle_size=args.subtitle_size,
             title_max_size=args.title_max_size,
