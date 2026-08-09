@@ -434,6 +434,7 @@ def generate_thumbnail(
     title_letter_spacing: float = -0.03,
     title_stroke_width: int | None = None,
     title_stroke_matches_fill: bool = False,
+    title_bottom_margin: float = 0.10,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -492,7 +493,7 @@ def generate_thumbnail(
         font_bold,
         title_size,
         margin_x=margin,
-        baseline_from_bottom=round(height * 0.10),
+        baseline_from_bottom=round(height * title_bottom_margin),
         stroke_width=title_stroke_width,
         highlight=highlight,
         highlight_color=highlight_rgb,
@@ -552,6 +553,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Draw the title's outline in the same color as its fill instead of black — "
         "fattens the glyphs (faux-bold) without a visible outline.",
     )
+    parser.add_argument(
+        "--title-bottom-margin",
+        type=float,
+        default=0.10,
+        help="Gap between the title's baseline and the canvas bottom, as a fraction of "
+        "height. Larger lifts the title up, e.g. 0.13.",
+    )
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
         "--font-regular", default=None, help="Path to the caption font (defaults to --font-bold)"
@@ -590,6 +598,7 @@ def main(argv: list[str] | None = None) -> int:
             title_letter_spacing=args.title_letter_spacing,
             title_stroke_width=args.title_stroke_width,
             title_stroke_matches_fill=args.title_stroke_matches_fill,
+            title_bottom_margin=args.title_bottom_margin,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
