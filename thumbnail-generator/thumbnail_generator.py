@@ -89,29 +89,32 @@ def hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
 # ---------------------------------------------------------------------------
 
 def cover_crop(
-    img: Image.Image, target_w: int, target_h: int, focus_y: float = 0.5
+    img: Image.Image,
+    target_w: int,
+    target_h: int,
+    focus_x: float = 0.5,
+    focus_y: float = 0.5,
+    zoom: float = 1.0,
 ) -> Image.Image:
     """Resize+crop so img fills target_w x target_h exactly, no distortion.
-    `focus_y` picks which part of the source survives a vertical crop: 0.0
-    keeps the top (crops away the bottom), which pushes source content DOWN
-    toward the frame's bottom edge; 1.0 keeps the bottom (crops away the
-    top), pushing source content UP toward the top edge; 0.5 is centered.
-    Only affects images taller than the target aspect ratio — width is
-    always centered."""
+    The image is scaled to the minimum size that covers the target box, then
+    `zoom` (>=1.0) scales it further, creating slack to reposition within.
+    `focus_x`/`focus_y` pick where the crop window sits in that slack: 0.0
+    keeps that axis' start edge (crops away the far edge), which pushes
+    source content toward the frame's far edge; 1.0 keeps the far edge
+    (crops away the start), pushing content toward the start edge; 0.5 is
+    centered. At zoom=1.0 the axis matching the target's aspect ratio has no
+    slack at all — only the other axis (and cropped-away edges) still moves.
+    Note the source's own composition sets the ceiling: focus/zoom can only
+    recenter within what the photo already contains, not create a framing
+    that was never captured."""
     img = img.convert("RGB")
     src_w, src_h = img.size
-    src_ratio = src_w / src_h
-    dst_ratio = target_w / target_h
-
-    if src_ratio > dst_ratio:
-        new_h = target_h
-        new_w = round(new_h * src_ratio)
-    else:
-        new_w = target_w
-        new_h = round(new_w / src_ratio)
+    scale = max(target_w / src_w, target_h / src_h) * zoom
+    new_w, new_h = round(src_w * scale), round(src_h * scale)
 
     img = img.resize((new_w, new_h), Image.LANCZOS)
-    left = (new_w - target_w) // 2
+    left = round((new_w - target_w) * focus_x)
     top = round((new_h - target_h) * focus_y)
     return img.crop((left, top, left + target_w, top + target_h))
 
@@ -171,10 +174,14 @@ def build_background(
     top_gradient_alpha: int,
     bottom_gradient_alpha: int,
     highlight_protect: float = 0.0,
+    bg_focus_x: float = 0.5,
     bg_focus_y: float = 0.5,
+    bg_zoom: float = 1.0,
 ) -> Image.Image:
     original = Image.open(bg_path)
-    original = cover_crop(original, width, height, focus_y=bg_focus_y)
+    original = cover_crop(
+        original, width, height, focus_x=bg_focus_x, focus_y=bg_focus_y, zoom=bg_zoom
+    )
     bg = ImageEnhance.Brightness(original).enhance(darken)
     bg = ImageEnhance.Color(bg).enhance(0.92)
     bg = bg.convert("RGBA")
@@ -528,7 +535,9 @@ def generate_thumbnail(
     top_gradient_alpha: int = 130,
     bottom_gradient_alpha: int = 165,
     protect_highlights: float = 0.0,
+    bg_focus_x: float = 0.5,
     bg_focus_y: float = 0.5,
+    bg_zoom: float = 1.0,
     margin: int | None = None,
     subtitle_size: int | None = None,
     title_max_size: int | None = None,
@@ -552,7 +561,9 @@ def generate_thumbnail(
         top_gradient_alpha,
         bottom_gradient_alpha,
         highlight_protect=protect_highlights,
+        bg_focus_x=bg_focus_x,
         bg_focus_y=bg_focus_y,
+        bg_zoom=bg_zoom,
     )
 
     top_y = round(height * 0.06)
@@ -565,7 +576,7 @@ def generate_thumbnail(
             (margin, top_y),
             bg_color=hex_to_rgb(badge_color or brand_color),
         )
-        top_y += round(height * 0.03)
+        top_y += round(byline_size * 0.5)
 
     if subtitle:
         lines = subtitle.split("\n")
@@ -597,7 +608,7 @@ def generate_thumbnail(
             shadow_alpha=180,
             anchor="ls",
         )
-        title_bottom_px += byline_ascent + byline_descent + round(height * 0.03)
+        title_bottom_px += byline_ascent + byline_descent + round(byline_size * 0.6)
 
     if title_stroke_width is None:
         title_stroke_width = max(2, round(title_max_size * 0.025))
@@ -731,6 +742,25 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "toward the frame's top edge (e.g. 1.0 to lift a subject away from bottom "
         "title text); 0 keeps the top and pushes content down; 0.5 is centered.",
     )
+    parser.add_argument(
+        "--bg-focus-x",
+        type=float,
+        default=0.5,
+        help="0-1: which part of the background photo survives the horizontal crop. "
+        "0 pushes content toward the right edge, 1 toward the left edge, 0.5 is "
+        "centered. Has no effect at --bg-zoom 1.0 if the photo is narrower than the "
+        "canvas ratio (it already fills the width with nothing to crop horizontally) "
+        "— raise --bg-zoom to unlock horizontal repositioning in that case.",
+    )
+    parser.add_argument(
+        "--bg-zoom",
+        type=float,
+        default=1.0,
+        help="Scales the background photo beyond the minimum needed to cover the "
+        "canvas (>=1.0), creating slack for --bg-focus-x/--bg-focus-y to reposition "
+        "within — e.g. 1.3 to shift a subject that a narrower photo has no room to "
+        "move otherwise.",
+    )
     parser.add_argument("--margin", type=int, default=None)
     parser.add_argument("--subtitle-size", type=int, default=None)
     parser.add_argument("--title-max-size", type=int, default=None)
@@ -767,7 +797,9 @@ def main(argv: list[str] | None = None) -> int:
             top_gradient_alpha=args.top_gradient_alpha,
             bottom_gradient_alpha=args.bottom_gradient_alpha,
             protect_highlights=args.protect_highlights,
+            bg_focus_x=args.bg_focus_x,
             bg_focus_y=args.bg_focus_y,
+            bg_zoom=args.bg_zoom,
             margin=args.margin,
             subtitle_size=args.subtitle_size,
             title_max_size=args.title_max_size,
