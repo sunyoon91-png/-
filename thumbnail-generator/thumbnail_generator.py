@@ -55,6 +55,11 @@ FONT_SEARCH_PATHS = [
     "/System/Library/Fonts/Supplemental/AppleSDGothicNeo.ttc",
 ]
 
+# Regular-weight companion for lighter text (bylines, small captions) where
+# the bold/black title weights would look too heavy. Falls back to whatever
+# --font-bold resolves to if this bundled file is missing.
+BUNDLED_REGULAR_FONT = str(Path(__file__).resolve().parent / "fonts" / "Pretendard-Regular.otf")
+
 
 class FontNotFoundError(RuntimeError):
     pass
@@ -298,6 +303,36 @@ def text_size(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont
     return bbox[2] - bbox[0], bbox[3] - bbox[1]
 
 
+def draw_badge(
+    canvas: Image.Image,
+    text: str,
+    font: ImageFont.FreeTypeFont,
+    xy: tuple[int, int],
+    bg_color: tuple[int, int, int],
+    text_color: tuple[int, int, int] = (255, 255, 255),
+    pad_x: int = 14,
+    pad_y: int = 7,
+    radius: int | None = None,
+) -> int:
+    """Draws a filled rounded-rect pill with `text` inside, top-left anchored
+    at xy (e.g. a small "창립 68주년 기념식" label above a title). Returns
+    the y just below the badge, so callers can stack a title under it."""
+    scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    bbox = scratch.textbbox((0, 0), text, font=font)
+    text_w, text_h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    w, h = text_w + pad_x * 2, text_h + pad_y * 2
+    if radius is None:
+        radius = h // 2
+
+    badge = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    ImageDraw.Draw(badge).rounded_rectangle((0, 0, w, h), radius=radius, fill=(*bg_color, 255))
+    ImageDraw.Draw(badge).text(
+        (pad_x - bbox[0], pad_y - bbox[1]), text, font=font, fill=(*text_color, 255)
+    )
+    canvas.alpha_composite(badge, dest=xy)
+    return xy[1] + h
+
+
 def draw_subtitle(
     canvas: Image.Image,
     lines: list[str],
@@ -360,10 +395,15 @@ def fit_title_size(
     highlight: str | None,
     highlight_scale: float,
     letter_spacing: float = 0.0,
+    max_height: int | None = None,
+    line_gap: int | None = None,
 ) -> int:
     """Finds the largest base font size where every title line (with its
     highlighted run possibly scaled up by highlight_scale) still fits
-    max_width, sharing a common baseline within its own line."""
+    max_width, sharing a common baseline within its own line, and where the
+    full stack of lines fits max_height (matching draw_title's pitch math —
+    only matters for multi-line titles with a badge/byline eating into the
+    vertical budget)."""
     scratch = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
     size = max_size
     while size > min_size:
@@ -377,6 +417,12 @@ def fit_title_size(
             if total > max_width:
                 fits = False
                 break
+        if fits and max_height is not None and len(lines) > 1:
+            base_font = resolve_font(font_path, size)
+            ascent, descent = base_font.getmetrics()
+            pitch = ascent + descent + (line_gap if line_gap is not None else round(size * 0.12))
+            if pitch * len(lines) > max_height:
+                fits = False
         if fits:
             return size
         size -= 2
@@ -400,6 +446,9 @@ def draw_title(
     shadow_blur: int = 20,
     shadow_alpha: int = 255,
     line_gap: int | None = None,
+    highlight_underline: bool = False,
+    underline_thickness: int | None = None,
+    underline_gap: int | None = None,
 ) -> None:
     """Draws `lines` stacked upward from `baseline_from_bottom`, each line
     laid out independently (its own highlight run, sharing a baseline within
@@ -407,13 +456,18 @@ def draw_title(
     outline in the same color as each segment's fill instead of black —
     fattens the glyphs (faux-bold, for when a heavier weight isn't available)
     without a visible outline, the look to reach for once `stroke_width=0`
-    (a pure shadow silhouette) reads too thin."""
+    (a pure shadow silhouette) reads too thin. `highlight_underline` draws a
+    solid bar in the highlight color under each highlighted run, spanning
+    just that run's width."""
     base_font = resolve_font(font_path, size)
     ascent, descent = base_font.getmetrics()
     pitch = ascent + descent + (line_gap if line_gap is not None else round(size * 0.12))
     n = len(lines)
     last_baseline = canvas.size[1] - baseline_from_bottom
     baselines = [last_baseline - pitch * (n - 1 - i) for i in range(n)]
+    underline_thickness = underline_thickness or max(2, round(size * 0.045))
+    underline_gap = underline_gap if underline_gap is not None else round(size * 0.08)
+    underline_draw = ImageDraw.Draw(canvas)
 
     for line, baseline_y in zip(lines, baselines):
         x = margin_x
@@ -421,6 +475,7 @@ def draw_title(
             seg_size = round(size * highlight_scale) if is_hl else size
             font = resolve_font(font_path, seg_size)
             color = highlight_color if is_hl else (255, 255, 255)
+            seg_start_x = x
             x += draw_outlined_text(
                 canvas,
                 (x, baseline_y),
@@ -435,6 +490,12 @@ def draw_title(
                 anchor="ls",
                 letter_spacing=letter_spacing,
             )
+            if is_hl and highlight_underline:
+                bar_y = baseline_y + underline_gap
+                underline_draw.rectangle(
+                    (seg_start_x, bar_y, x, bar_y + underline_thickness),
+                    fill=(*highlight_color, 255),
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -456,6 +517,11 @@ def generate_thumbnail(
     title_stroke_width: int | None = None,
     title_stroke_matches_fill: bool = False,
     title_bottom_margin: float = 0.10,
+    highlight_underline: bool = False,
+    badge: str | None = None,
+    badge_color: str | None = None,
+    byline: str | None = None,
+    byline_size: int | None = None,
     font_bold: str | None = None,
     font_regular: str | None = None,
     darken: float = 0.78,
@@ -470,6 +536,10 @@ def generate_thumbnail(
 ) -> None:
     margin = margin if margin is not None else round(width * 0.05)
     subtitle_size = subtitle_size or round(height * 0.10)
+    byline_size = byline_size or round(height * 0.045)
+    regular_font_path = font_regular or (
+        BUNDLED_REGULAR_FONT if Path(BUNDLED_REGULAR_FONT).exists() else font_bold
+    )
     title_max_size = title_max_size or round(height * 0.24)
     title_min_size = title_min_size or round(height * 0.10)
     highlight_rgb = hex_to_rgb(highlight_color or brand_color)
@@ -485,22 +555,54 @@ def generate_thumbnail(
         bg_focus_y=bg_focus_y,
     )
 
+    top_y = round(height * 0.06)
+    if badge:
+        badge_font = resolve_font(font_bold, round(byline_size * 1.05))
+        top_y = draw_badge(
+            canvas,
+            badge,
+            badge_font,
+            (margin, top_y),
+            bg_color=hex_to_rgb(badge_color or brand_color),
+        )
+        top_y += round(height * 0.03)
+
     if subtitle:
         lines = subtitle.split("\n")
-        sub_font = resolve_font(font_regular or font_bold, subtitle_size)
+        sub_font = resolve_font(regular_font_path, subtitle_size)
         draw_subtitle(
             canvas,
             lines,
             sub_font,
             margin_x=margin,
-            top_y=round(height * 0.08),
+            top_y=top_y,
             line_gap=round(subtitle_size * 0.18),
             stroke_width=max(1, round(subtitle_size * 0.035)),
         )
 
+    title_bottom_px = round(height * title_bottom_margin)
+    if byline:
+        byline_font = resolve_font(regular_font_path, byline_size)
+        byline_ascent, byline_descent = byline_font.getmetrics()
+        byline_baseline = height - title_bottom_px
+        draw_outlined_text(
+            canvas,
+            (margin, byline_baseline),
+            byline,
+            byline_font,
+            fill=(255, 255, 255),
+            stroke_width=0,
+            shadow_offset=(0, 4),
+            shadow_blur=8,
+            shadow_alpha=180,
+            anchor="ls",
+        )
+        title_bottom_px += byline_ascent + byline_descent + round(height * 0.03)
+
     if title_stroke_width is None:
         title_stroke_width = max(2, round(title_max_size * 0.025))
     title_lines = title.split("\n")
+    title_max_height = height - top_y - title_bottom_px
     title_size = fit_title_size(
         font_bold,
         title_lines,
@@ -510,6 +612,7 @@ def generate_thumbnail(
         highlight=highlight,
         highlight_scale=highlight_scale,
         letter_spacing=title_letter_spacing,
+        max_height=title_max_height,
     )
     draw_title(
         canvas,
@@ -517,12 +620,13 @@ def generate_thumbnail(
         font_bold,
         title_size,
         margin_x=margin,
-        baseline_from_bottom=round(height * title_bottom_margin),
+        baseline_from_bottom=title_bottom_px,
         stroke_width=title_stroke_width,
         highlight=highlight,
         highlight_color=highlight_rgb,
         highlight_scale=highlight_scale,
         letter_spacing=title_letter_spacing,
+        highlight_underline=highlight_underline,
         stroke_matches_fill=title_stroke_matches_fill,
     )
 
@@ -589,6 +693,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Gap between the title's baseline and the canvas bottom, as a fraction of "
         "height. Larger lifts the title up, e.g. 0.13.",
     )
+    parser.add_argument(
+        "--highlight-underline",
+        action="store_true",
+        help="Draw a solid bar under each highlighted title run, in the highlight color.",
+    )
+    parser.add_argument(
+        "--badge", default=None, help="Small pill label above the title, e.g. '창립 68주년 기념식'"
+    )
+    parser.add_argument(
+        "--badge-color", default=None, help="Hex background color for --badge (defaults to --brand-color)"
+    )
+    parser.add_argument(
+        "--byline", default=None, help="Small regular-weight caption under the title, e.g. '신창재 의장 메시지'"
+    )
+    parser.add_argument("--byline-size", type=int, default=None, help="Font size for --byline, in px")
     parser.add_argument("--font-bold", default=None, help="Path to a bold Korean-capable font")
     parser.add_argument(
         "--font-regular", default=None, help="Path to the caption font (defaults to --font-bold)"
@@ -637,6 +756,11 @@ def main(argv: list[str] | None = None) -> int:
             title_stroke_width=args.title_stroke_width,
             title_stroke_matches_fill=args.title_stroke_matches_fill,
             title_bottom_margin=args.title_bottom_margin,
+            highlight_underline=args.highlight_underline,
+            badge=args.badge,
+            badge_color=args.badge_color,
+            byline=args.byline,
+            byline_size=args.byline_size,
             font_bold=args.font_bold,
             font_regular=args.font_regular,
             darken=args.darken,
