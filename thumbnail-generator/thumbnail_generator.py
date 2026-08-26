@@ -25,7 +25,10 @@ from __future__ import annotations
 
 import argparse
 import math
+import re
+import shutil
 import sys
+from datetime import date
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
@@ -644,6 +647,61 @@ def generate_thumbnail(
     canvas.convert("RGB").save(out_path, quality=95)
 
 
+def _slugify(text: str) -> str:
+    slug = re.sub(r"[\\/:*?\"<>|\n\r]+", " ", text).strip()
+    return re.sub(r"\s+", " ", slug) or "thumbnail"
+
+
+def export_to_obsidian(
+    vault_path: str,
+    image_path: str,
+    title: str,
+    subtitle: str | None = None,
+    badge: str | None = None,
+    byline: str | None = None,
+    tags: list[str] | None = None,
+    notes_folder: str = "Thumbnails",
+    attachments_folder: str = "Attachments",
+) -> Path:
+    """Copy the generated image into an Obsidian vault and write a note that embeds it."""
+    vault = Path(vault_path)
+    if not vault.is_dir():
+        raise FileNotFoundError(f"Obsidian vault not found: {vault}")
+
+    attachments_dir = vault / attachments_folder
+    notes_dir = vault / notes_folder
+    attachments_dir.mkdir(parents=True, exist_ok=True)
+    notes_dir.mkdir(parents=True, exist_ok=True)
+
+    image_src = Path(image_path)
+    image_dest = attachments_dir / image_src.name
+    shutil.copy2(image_src, image_dest)
+
+    note_path = notes_dir / f"{_slugify(title)}.md"
+    frontmatter_tags = "\n".join(f"  - {t}" for t in tags) if tags else ""
+    frontmatter = "\n".join(
+        part
+        for part in [
+            "---",
+            f'title: "{title}"',
+            f"created: {date.today().isoformat()}",
+            "tags:" if tags else None,
+            frontmatter_tags if tags else None,
+            "---",
+        ]
+        if part is not None
+    )
+    body_lines = [frontmatter, "", f"![[{image_dest.name}]]", ""]
+    if badge:
+        body_lines.append(f"**{badge}**")
+    if subtitle:
+        body_lines.append(subtitle.replace("\n", " "))
+    if byline:
+        body_lines.append(f"*{byline}*")
+    note_path.write_text("\n".join(body_lines) + "\n", encoding="utf-8")
+    return note_path
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Generate a branded video thumbnail from a background photo + title.",
@@ -765,6 +823,27 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--subtitle-size", type=int, default=None)
     parser.add_argument("--title-max-size", type=int, default=None)
     parser.add_argument("--title-min-size", type=int, default=None)
+    parser.add_argument(
+        "--obsidian-vault",
+        default=None,
+        help="Path to an Obsidian vault. When set, the generated image is copied into "
+        "the vault and a note embedding it is created there.",
+    )
+    parser.add_argument(
+        "--obsidian-notes-folder",
+        default="Thumbnails",
+        help="Subfolder (inside --obsidian-vault) to write the note into",
+    )
+    parser.add_argument(
+        "--obsidian-attachments-folder",
+        default="Attachments",
+        help="Subfolder (inside --obsidian-vault) to copy the image into",
+    )
+    parser.add_argument(
+        "--obsidian-tags",
+        default=None,
+        help="Comma-separated tags to add to the note's frontmatter, e.g. 'thumbnail,광화문글판'",
+    )
     return parser.parse_args(argv)
 
 
@@ -813,6 +892,27 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     print(f"saved: {args.out}")
+
+    if args.obsidian_vault:
+        try:
+            note_path = export_to_obsidian(
+                vault_path=args.obsidian_vault,
+                image_path=args.out,
+                title=args.title.replace("\\n", " "),
+                subtitle=args.subtitle.replace("\\n", "\n") if args.subtitle else None,
+                badge=args.badge,
+                byline=args.byline,
+                tags=[t.strip() for t in args.obsidian_tags.split(",") if t.strip()]
+                if args.obsidian_tags
+                else None,
+                notes_folder=args.obsidian_notes_folder,
+                attachments_folder=args.obsidian_attachments_folder,
+            )
+        except FileNotFoundError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 1
+        print(f"obsidian note: {note_path}")
+
     return 0
 
 

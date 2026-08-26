@@ -67,6 +67,31 @@ the reference style (740x400, `#0E9B49` brand color).
 | `--margin` | 5% of width | Left margin shared by caption and title |
 | `--subtitle-size` / `--title-max-size` / `--title-min-size` | scaled to height | Font sizes in px |
 
+## Obsidian integration
+
+Pass `--obsidian-vault` to also copy the generated image into an Obsidian
+vault and create a note that embeds it (`![[image.png]]`), with title, tags,
+and any `--badge`/`--subtitle`/`--byline` you passed written into the note's
+frontmatter and body. The vault must be a folder already on this machine's
+filesystem (e.g. an iCloud/Dropbox/git-synced vault, or one reachable over a
+mounted network share) — Obsidian itself just watches that folder.
+
+```bash
+python thumbnail_generator.py \
+  --bg background.jpg \
+  --title "생명보험의 가치" \
+  --out thumbnail.png \
+  --obsidian-vault "/path/to/MyVault" \
+  --obsidian-tags "thumbnail,광화문글판"
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `--obsidian-vault` | none | Path to the vault; enables the export |
+| `--obsidian-notes-folder` | `Thumbnails` | Subfolder for the generated note |
+| `--obsidian-attachments-folder` | `Attachments` | Subfolder for the copied image |
+| `--obsidian-tags` | none | Comma-separated tags for the note's frontmatter |
+
 ## Reusing the style programmatically
 
 ```python
