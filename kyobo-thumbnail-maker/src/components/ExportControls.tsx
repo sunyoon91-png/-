@@ -13,21 +13,15 @@ interface ExportControlsProps {
 }
 
 function downloadCanvas(canvas: HTMLCanvasElement, filename: string, type: string, quality?: number) {
-  canvas.toBlob(
-    (blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    },
-    type,
-    quality
-  );
+  // toDataURL is synchronous, avoiding the extra object-URL lifecycle
+  // (create, click, then revoke) that toBlob's async callback requires.
+  const dataUrl = canvas.toDataURL(type, quality);
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 export default function ExportControls({ title, hasImage, mainCanvasRef, onReset }: ExportControlsProps) {
