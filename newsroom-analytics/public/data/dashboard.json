@@ -1,0 +1,1630 @@
+{
+  "updatedAt": "2026-09-18",
+  "period": {
+    "startDate": "2026-03-23",
+    "endDate": "2026-09-18",
+    "preset": "30d"
+  },
+  "summary": {
+    "pageViews": 116221,
+    "pageViewsChange": 4.9,
+    "searchVisits": 57953,
+    "searchVisitsChange": 6.1,
+    "searchShare": 49.9,
+    "searchShareChange": 0.6,
+    "searchImpressions": 953579,
+    "searchImpressionsChange": 3.5,
+    "searchCtr": 6.1,
+    "searchCtrChange": 0.2,
+    "averageRank": 12,
+    "averageRankChange": -1.2,
+    "averageTimeSeconds": 205,
+    "averageTimeChange": 12,
+    "publishedContents": 8,
+    "publishedContentsChange": 2
+  },
+  "trends": [
+    {
+      "date": "2026-03-23",
+      "pageViews": 3570,
+      "searchVisits": 1908,
+      "searchImpressions": 37691,
+      "searchCtr": 5.06
+    },
+    {
+      "date": "2026-03-24",
+      "pageViews": 3466,
+      "searchVisits": 1728,
+      "searchImpressions": 31668,
+      "searchCtr": 5.46
+    },
+    {
+      "date": "2026-03-25",
+      "pageViews": 3305,
+      "searchVisits": 1413,
+      "searchImpressions": 25742,
+      "searchCtr": 5.49
+    },
+    {
+      "date": "2026-03-26",
+      "pageViews": 3490,
+      "searchVisits": 1813,
+      "searchImpressions": 28880,
+      "searchCtr": 6.28
+    },
+    {
+      "date": "2026-03-27",
+      "pageViews": 3458,
+      "searchVisits": 1911,
+      "searchImpressions": 38143,
+      "searchCtr": 5.01
+    },
+    {
+      "date": "2026-03-28",
+      "pageViews": 2529,
+      "searchVisits": 1127,
+      "searchImpressions": 16691,
+      "searchCtr": 6.75
+    },
+    {
+      "date": "2026-03-29",
+      "pageViews": 2371,
+      "searchVisits": 1272,
+      "searchImpressions": 19054,
+      "searchCtr": 6.68
+    },
+    {
+      "date": "2026-03-30",
+      "pageViews": 3187,
+      "searchVisits": 1478,
+      "searchImpressions": 25079,
+      "searchCtr": 5.89
+    },
+    {
+      "date": "2026-03-31",
+      "pageViews": 3416,
+      "searchVisits": 1454,
+      "searchImpressions": 25120,
+      "searchCtr": 5.79
+    },
+    {
+      "date": "2026-04-01",
+      "pageViews": 3508,
+      "searchVisits": 1686,
+      "searchImpressions": 31030,
+      "searchCtr": 5.43
+    },
+    {
+      "date": "2026-04-02",
+      "pageViews": 2892,
+      "searchVisits": 1582,
+      "searchImpressions": 26660,
+      "searchCtr": 5.93
+    },
+    {
+      "date": "2026-04-03",
+      "pageViews": 2951,
+      "searchVisits": 1602,
+      "searchImpressions": 24220,
+      "searchCtr": 6.61
+    },
+    {
+      "date": "2026-04-04",
+      "pageViews": 2183,
+      "searchVisits": 1150,
+      "searchImpressions": 18061,
+      "searchCtr": 6.37
+    },
+    {
+      "date": "2026-04-05",
+      "pageViews": 1973,
+      "searchVisits": 1099,
+      "searchImpressions": 16606,
+      "searchCtr": 6.62
+    },
+    {
+      "date": "2026-04-06",
+      "pageViews": 3447,
+      "searchVisits": 1903,
+      "searchImpressions": 30135,
+      "searchCtr": 6.31
+    },
+    {
+      "date": "2026-04-07",
+      "pageViews": 3444,
+      "searchVisits": 1481,
+      "searchImpressions": 21297,
+      "searchCtr": 6.95
+    },
+    {
+      "date": "2026-04-08",
+      "pageViews": 3219,
+      "searchVisits": 1704,
+      "searchImpressions": 32792,
+      "searchCtr": 5.2
+    },
+    {
+      "date": "2026-04-09",
+      "pageViews": 3183,
+      "searchVisits": 1555,
+      "searchImpressions": 23212,
+      "searchCtr": 6.7
+    },
+    {
+      "date": "2026-04-10",
+      "pageViews": 3752,
+      "searchVisits": 1897,
+      "searchImpressions": 30220,
+      "searchCtr": 6.28
+    },
+    {
+      "date": "2026-04-11",
+      "pageViews": 2347,
+      "searchVisits": 1171,
+      "searchImpressions": 21959,
+      "searchCtr": 5.33
+    },
+    {
+      "date": "2026-04-12",
+      "pageViews": 2376,
+      "searchVisits": 1252,
+      "searchImpressions": 24908,
+      "searchCtr": 5.03
+    },
+    {
+      "date": "2026-04-13",
+      "pageViews": 3294,
+      "searchVisits": 1673,
+      "searchImpressions": 26526,
+      "searchCtr": 6.31
+    },
+    {
+      "date": "2026-04-14",
+      "pageViews": 3469,
+      "searchVisits": 1736,
+      "searchImpressions": 26276,
+      "searchCtr": 6.61
+    },
+    {
+      "date": "2026-04-15",
+      "pageViews": 3336,
+      "searchVisits": 1409,
+      "searchImpressions": 20059,
+      "searchCtr": 7.02
+    },
+    {
+      "date": "2026-04-16",
+      "pageViews": 3311,
+      "searchVisits": 1565,
+      "searchImpressions": 24501,
+      "searchCtr": 6.39
+    },
+    {
+      "date": "2026-04-17",
+      "pageViews": 3816,
+      "searchVisits": 1637,
+      "searchImpressions": 26020,
+      "searchCtr": 6.29
+    },
+    {
+      "date": "2026-04-18",
+      "pageViews": 2279,
+      "searchVisits": 1117,
+      "searchImpressions": 19495,
+      "searchCtr": 5.73
+    },
+    {
+      "date": "2026-04-19",
+      "pageViews": 2139,
+      "searchVisits": 929,
+      "searchImpressions": 15636,
+      "searchCtr": 5.94
+    },
+    {
+      "date": "2026-04-20",
+      "pageViews": 3639,
+      "searchVisits": 1673,
+      "searchImpressions": 27652,
+      "searchCtr": 6.05
+    },
+    {
+      "date": "2026-04-21",
+      "pageViews": 3406,
+      "searchVisits": 1651,
+      "searchImpressions": 31443,
+      "searchCtr": 5.25
+    },
+    {
+      "date": "2026-04-22",
+      "pageViews": 3791,
+      "searchVisits": 1622,
+      "searchImpressions": 24137,
+      "searchCtr": 6.72
+    },
+    {
+      "date": "2026-04-23",
+      "pageViews": 3185,
+      "searchVisits": 1552,
+      "searchImpressions": 28769,
+      "searchCtr": 5.39
+    },
+    {
+      "date": "2026-04-24",
+      "pageViews": 3028,
+      "searchVisits": 1337,
+      "searchImpressions": 19402,
+      "searchCtr": 6.89
+    },
+    {
+      "date": "2026-04-25",
+      "pageViews": 2623,
+      "searchVisits": 1282,
+      "searchImpressions": 22187,
+      "searchCtr": 5.78
+    },
+    {
+      "date": "2026-04-26",
+      "pageViews": 2609,
+      "searchVisits": 1428,
+      "searchImpressions": 24876,
+      "searchCtr": 5.74
+    },
+    {
+      "date": "2026-04-27",
+      "pageViews": 3392,
+      "searchVisits": 1816,
+      "searchImpressions": 31515,
+      "searchCtr": 5.76
+    },
+    {
+      "date": "2026-04-28",
+      "pageViews": 3167,
+      "searchVisits": 1620,
+      "searchImpressions": 31763,
+      "searchCtr": 5.1
+    },
+    {
+      "date": "2026-04-29",
+      "pageViews": 3483,
+      "searchVisits": 1860,
+      "searchImpressions": 27303,
+      "searchCtr": 6.81
+    },
+    {
+      "date": "2026-04-30",
+      "pageViews": 3739,
+      "searchVisits": 1949,
+      "searchImpressions": 33271,
+      "searchCtr": 5.86
+    },
+    {
+      "date": "2026-05-01",
+      "pageViews": 3334,
+      "searchVisits": 1772,
+      "searchImpressions": 30624,
+      "searchCtr": 5.79
+    },
+    {
+      "date": "2026-05-02",
+      "pageViews": 2611,
+      "searchVisits": 1261,
+      "searchImpressions": 22462,
+      "searchCtr": 5.61
+    },
+    {
+      "date": "2026-05-03",
+      "pageViews": 2303,
+      "searchVisits": 1000,
+      "searchImpressions": 15163,
+      "searchCtr": 6.6
+    },
+    {
+      "date": "2026-05-04",
+      "pageViews": 3481,
+      "searchVisits": 1544,
+      "searchImpressions": 27533,
+      "searchCtr": 5.61
+    },
+    {
+      "date": "2026-05-05",
+      "pageViews": 3699,
+      "searchVisits": 1588,
+      "searchImpressions": 25918,
+      "searchCtr": 6.13
+    },
+    {
+      "date": "2026-05-06",
+      "pageViews": 3336,
+      "searchVisits": 1499,
+      "searchImpressions": 28675,
+      "searchCtr": 5.23
+    },
+    {
+      "date": "2026-05-07",
+      "pageViews": 3869,
+      "searchVisits": 1636,
+      "searchImpressions": 27415,
+      "searchCtr": 5.97
+    },
+    {
+      "date": "2026-05-08",
+      "pageViews": 3646,
+      "searchVisits": 1996,
+      "searchImpressions": 35339,
+      "searchCtr": 5.65
+    },
+    {
+      "date": "2026-05-09",
+      "pageViews": 2169,
+      "searchVisits": 1001,
+      "searchImpressions": 18490,
+      "searchCtr": 5.41
+    },
+    {
+      "date": "2026-05-10",
+      "pageViews": 2600,
+      "searchVisits": 1310,
+      "searchImpressions": 20381,
+      "searchCtr": 6.43
+    },
+    {
+      "date": "2026-05-11",
+      "pageViews": 3832,
+      "searchVisits": 1734,
+      "searchImpressions": 30281,
+      "searchCtr": 5.73
+    },
+    {
+      "date": "2026-05-12",
+      "pageViews": 3890,
+      "searchVisits": 1968,
+      "searchImpressions": 28907,
+      "searchCtr": 6.81
+    },
+    {
+      "date": "2026-05-13",
+      "pageViews": 3271,
+      "searchVisits": 1447,
+      "searchImpressions": 22765,
+      "searchCtr": 6.36
+    },
+    {
+      "date": "2026-05-14",
+      "pageViews": 3470,
+      "searchVisits": 1596,
+      "searchImpressions": 27287,
+      "searchCtr": 5.85
+    },
+    {
+      "date": "2026-05-15",
+      "pageViews": 3873,
+      "searchVisits": 1849,
+      "searchImpressions": 28253,
+      "searchCtr": 6.54
+    },
+    {
+      "date": "2026-05-16",
+      "pageViews": 2703,
+      "searchVisits": 1494,
+      "searchImpressions": 28062,
+      "searchCtr": 5.32
+    },
+    {
+      "date": "2026-05-17",
+      "pageViews": 2715,
+      "searchVisits": 1261,
+      "searchImpressions": 22831,
+      "searchCtr": 5.52
+    },
+    {
+      "date": "2026-05-18",
+      "pageViews": 3301,
+      "searchVisits": 1818,
+      "searchImpressions": 28628,
+      "searchCtr": 6.35
+    },
+    {
+      "date": "2026-05-19",
+      "pageViews": 3637,
+      "searchVisits": 1637,
+      "searchImpressions": 23259,
+      "searchCtr": 7.04
+    },
+    {
+      "date": "2026-05-20",
+      "pageViews": 3201,
+      "searchVisits": 1603,
+      "searchImpressions": 25630,
+      "searchCtr": 6.25
+    },
+    {
+      "date": "2026-05-21",
+      "pageViews": 3503,
+      "searchVisits": 1686,
+      "searchImpressions": 29655,
+      "searchCtr": 5.69
+    },
+    {
+      "date": "2026-05-22",
+      "pageViews": 3923,
+      "searchVisits": 1764,
+      "searchImpressions": 27357,
+      "searchCtr": 6.45
+    },
+    {
+      "date": "2026-05-23",
+      "pageViews": 2685,
+      "searchVisits": 1247,
+      "searchImpressions": 22755,
+      "searchCtr": 5.48
+    },
+    {
+      "date": "2026-05-24",
+      "pageViews": 2579,
+      "searchVisits": 1145,
+      "searchImpressions": 18670,
+      "searchCtr": 6.13
+    },
+    {
+      "date": "2026-05-25",
+      "pageViews": 3920,
+      "searchVisits": 1750,
+      "searchImpressions": 31822,
+      "searchCtr": 5.5
+    },
+    {
+      "date": "2026-05-26",
+      "pageViews": 3914,
+      "searchVisits": 2075,
+      "searchImpressions": 29841,
+      "searchCtr": 6.95
+    },
+    {
+      "date": "2026-05-27",
+      "pageViews": 4116,
+      "searchVisits": 1949,
+      "searchImpressions": 37806,
+      "searchCtr": 5.16
+    },
+    {
+      "date": "2026-05-28",
+      "pageViews": 3895,
+      "searchVisits": 1850,
+      "searchImpressions": 32808,
+      "searchCtr": 5.64
+    },
+    {
+      "date": "2026-05-29",
+      "pageViews": 3700,
+      "searchVisits": 1675,
+      "searchImpressions": 29965,
+      "searchCtr": 5.59
+    },
+    {
+      "date": "2026-05-30",
+      "pageViews": 2790,
+      "searchVisits": 1298,
+      "searchImpressions": 21241,
+      "searchCtr": 6.11
+    },
+    {
+      "date": "2026-05-31",
+      "pageViews": 2883,
+      "searchVisits": 1242,
+      "searchImpressions": 19449,
+      "searchCtr": 6.39
+    },
+    {
+      "date": "2026-06-01",
+      "pageViews": 3461,
+      "searchVisits": 1895,
+      "searchImpressions": 34628,
+      "searchCtr": 5.47
+    },
+    {
+      "date": "2026-06-02",
+      "pageViews": 3557,
+      "searchVisits": 1616,
+      "searchImpressions": 23766,
+      "searchCtr": 6.8
+    },
+    {
+      "date": "2026-06-03",
+      "pageViews": 3773,
+      "searchVisits": 1844,
+      "searchImpressions": 35883,
+      "searchCtr": 5.14
+    },
+    {
+      "date": "2026-06-04",
+      "pageViews": 3470,
+      "searchVisits": 1491,
+      "searchImpressions": 25394,
+      "searchCtr": 5.87
+    },
+    {
+      "date": "2026-06-05",
+      "pageViews": 4200,
+      "searchVisits": 1996,
+      "searchImpressions": 31783,
+      "searchCtr": 6.28
+    },
+    {
+      "date": "2026-06-06",
+      "pageViews": 2189,
+      "searchVisits": 1190,
+      "searchImpressions": 22175,
+      "searchCtr": 5.37
+    },
+    {
+      "date": "2026-06-07",
+      "pageViews": 2805,
+      "searchVisits": 1553,
+      "searchImpressions": 24328,
+      "searchCtr": 6.38
+    },
+    {
+      "date": "2026-06-08",
+      "pageViews": 3998,
+      "searchVisits": 1692,
+      "searchImpressions": 26252,
+      "searchCtr": 6.45
+    },
+    {
+      "date": "2026-06-09",
+      "pageViews": 3557,
+      "searchVisits": 1746,
+      "searchImpressions": 25640,
+      "searchCtr": 6.81
+    },
+    {
+      "date": "2026-06-10",
+      "pageViews": 3142,
+      "searchVisits": 1680,
+      "searchImpressions": 26332,
+      "searchCtr": 6.38
+    },
+    {
+      "date": "2026-06-11",
+      "pageViews": 3216,
+      "searchVisits": 1522,
+      "searchImpressions": 22803,
+      "searchCtr": 6.67
+    },
+    {
+      "date": "2026-06-12",
+      "pageViews": 4245,
+      "searchVisits": 2143,
+      "searchImpressions": 32381,
+      "searchCtr": 6.62
+    },
+    {
+      "date": "2026-06-13",
+      "pageViews": 2350,
+      "searchVisits": 1287,
+      "searchImpressions": 23883,
+      "searchCtr": 5.39
+    },
+    {
+      "date": "2026-06-14",
+      "pageViews": 2267,
+      "searchVisits": 1180,
+      "searchImpressions": 18673,
+      "searchCtr": 6.32
+    },
+    {
+      "date": "2026-06-15",
+      "pageViews": 3242,
+      "searchVisits": 1560,
+      "searchImpressions": 24040,
+      "searchCtr": 6.49
+    },
+    {
+      "date": "2026-06-16",
+      "pageViews": 3832,
+      "searchVisits": 1870,
+      "searchImpressions": 37056,
+      "searchCtr": 5.05
+    },
+    {
+      "date": "2026-06-17",
+      "pageViews": 3239,
+      "searchVisits": 1489,
+      "searchImpressions": 29097,
+      "searchCtr": 5.12
+    },
+    {
+      "date": "2026-06-18",
+      "pageViews": 4169,
+      "searchVisits": 1894,
+      "searchImpressions": 32360,
+      "searchCtr": 5.85
+    },
+    {
+      "date": "2026-06-19",
+      "pageViews": 3725,
+      "searchVisits": 1976,
+      "searchImpressions": 29540,
+      "searchCtr": 6.69
+    },
+    {
+      "date": "2026-06-20",
+      "pageViews": 2448,
+      "searchVisits": 1141,
+      "searchImpressions": 17837,
+      "searchCtr": 6.4
+    },
+    {
+      "date": "2026-06-21",
+      "pageViews": 2768,
+      "searchVisits": 1273,
+      "searchImpressions": 19904,
+      "searchCtr": 6.4
+    },
+    {
+      "date": "2026-06-22",
+      "pageViews": 3311,
+      "searchVisits": 1423,
+      "searchImpressions": 24843,
+      "searchCtr": 5.73
+    },
+    {
+      "date": "2026-06-23",
+      "pageViews": 4299,
+      "searchVisits": 1868,
+      "searchImpressions": 32877,
+      "searchCtr": 5.68
+    },
+    {
+      "date": "2026-06-24",
+      "pageViews": 3996,
+      "searchVisits": 2127,
+      "searchImpressions": 39479,
+      "searchCtr": 5.39
+    },
+    {
+      "date": "2026-06-25",
+      "pageViews": 4005,
+      "searchVisits": 2008,
+      "searchImpressions": 33818,
+      "searchCtr": 5.94
+    },
+    {
+      "date": "2026-06-26",
+      "pageViews": 3664,
+      "searchVisits": 1979,
+      "searchImpressions": 29570,
+      "searchCtr": 6.69
+    },
+    {
+      "date": "2026-06-27",
+      "pageViews": 2412,
+      "searchVisits": 1029,
+      "searchImpressions": 15807,
+      "searchCtr": 6.51
+    },
+    {
+      "date": "2026-06-28",
+      "pageViews": 2678,
+      "searchVisits": 1339,
+      "searchImpressions": 19550,
+      "searchCtr": 6.85
+    },
+    {
+      "date": "2026-06-29",
+      "pageViews": 4141,
+      "searchVisits": 2226,
+      "searchImpressions": 33743,
+      "searchCtr": 6.6
+    },
+    {
+      "date": "2026-06-30",
+      "pageViews": 3723,
+      "searchVisits": 1707,
+      "searchImpressions": 33349,
+      "searchCtr": 5.12
+    },
+    {
+      "date": "2026-07-01",
+      "pageViews": 4194,
+      "searchVisits": 1932,
+      "searchImpressions": 35228,
+      "searchCtr": 5.48
+    },
+    {
+      "date": "2026-07-02",
+      "pageViews": 3738,
+      "searchVisits": 1728,
+      "searchImpressions": 34129,
+      "searchCtr": 5.06
+    },
+    {
+      "date": "2026-07-03",
+      "pageViews": 3980,
+      "searchVisits": 2078,
+      "searchImpressions": 30311,
+      "searchCtr": 6.86
+    },
+    {
+      "date": "2026-07-04",
+      "pageViews": 2977,
+      "searchVisits": 1662,
+      "searchImpressions": 28657,
+      "searchCtr": 5.8
+    },
+    {
+      "date": "2026-07-05",
+      "pageViews": 2718,
+      "searchVisits": 1329,
+      "searchImpressions": 24211,
+      "searchCtr": 5.49
+    },
+    {
+      "date": "2026-07-06",
+      "pageViews": 3348,
+      "searchVisits": 1717,
+      "searchImpressions": 24059,
+      "searchCtr": 7.14
+    },
+    {
+      "date": "2026-07-07",
+      "pageViews": 4289,
+      "searchVisits": 2351,
+      "searchImpressions": 44965,
+      "searchCtr": 5.23
+    },
+    {
+      "date": "2026-07-08",
+      "pageViews": 3716,
+      "searchVisits": 1906,
+      "searchImpressions": 34421,
+      "searchCtr": 5.54
+    },
+    {
+      "date": "2026-07-09",
+      "pageViews": 4428,
+      "searchVisits": 2063,
+      "searchImpressions": 39841,
+      "searchCtr": 5.18
+    },
+    {
+      "date": "2026-07-10",
+      "pageViews": 3428,
+      "searchVisits": 1594,
+      "searchImpressions": 30899,
+      "searchCtr": 5.16
+    },
+    {
+      "date": "2026-07-11",
+      "pageViews": 2465,
+      "searchVisits": 1057,
+      "searchImpressions": 15619,
+      "searchCtr": 6.77
+    },
+    {
+      "date": "2026-07-12",
+      "pageViews": 2825,
+      "searchVisits": 1570,
+      "searchImpressions": 31380,
+      "searchCtr": 5
+    },
+    {
+      "date": "2026-07-13",
+      "pageViews": 4288,
+      "searchVisits": 2076,
+      "searchImpressions": 40520,
+      "searchCtr": 5.12
+    },
+    {
+      "date": "2026-07-14",
+      "pageViews": 3595,
+      "searchVisits": 1984,
+      "searchImpressions": 31483,
+      "searchCtr": 6.3
+    },
+    {
+      "date": "2026-07-15",
+      "pageViews": 3614,
+      "searchVisits": 1944,
+      "searchImpressions": 34093,
+      "searchCtr": 5.7
+    },
+    {
+      "date": "2026-07-16",
+      "pageViews": 3663,
+      "searchVisits": 1832,
+      "searchImpressions": 27529,
+      "searchCtr": 6.65
+    },
+    {
+      "date": "2026-07-17",
+      "pageViews": 4232,
+      "searchVisits": 2103,
+      "searchImpressions": 35404,
+      "searchCtr": 5.94
+    },
+    {
+      "date": "2026-07-18",
+      "pageViews": 2421,
+      "searchVisits": 1082,
+      "searchImpressions": 21059,
+      "searchCtr": 5.14
+    },
+    {
+      "date": "2026-07-19",
+      "pageViews": 2931,
+      "searchVisits": 1607,
+      "searchImpressions": 31192,
+      "searchCtr": 5.15
+    },
+    {
+      "date": "2026-07-20",
+      "pageViews": 3373,
+      "searchVisits": 1482,
+      "searchImpressions": 28420,
+      "searchCtr": 5.21
+    },
+    {
+      "date": "2026-07-21",
+      "pageViews": 3868,
+      "searchVisits": 1772,
+      "searchImpressions": 27046,
+      "searchCtr": 6.55
+    },
+    {
+      "date": "2026-07-22",
+      "pageViews": 3803,
+      "searchVisits": 1991,
+      "searchImpressions": 32192,
+      "searchCtr": 6.18
+    },
+    {
+      "date": "2026-07-23",
+      "pageViews": 3668,
+      "searchVisits": 2030,
+      "searchImpressions": 37340,
+      "searchCtr": 5.44
+    },
+    {
+      "date": "2026-07-24",
+      "pageViews": 3960,
+      "searchVisits": 1847,
+      "searchImpressions": 34056,
+      "searchCtr": 5.42
+    },
+    {
+      "date": "2026-07-25",
+      "pageViews": 2789,
+      "searchVisits": 1285,
+      "searchImpressions": 24161,
+      "searchCtr": 5.32
+    },
+    {
+      "date": "2026-07-26",
+      "pageViews": 2968,
+      "searchVisits": 1350,
+      "searchImpressions": 21581,
+      "searchCtr": 6.26
+    },
+    {
+      "date": "2026-07-27",
+      "pageViews": 4027,
+      "searchVisits": 2041,
+      "searchImpressions": 37735,
+      "searchCtr": 5.41
+    },
+    {
+      "date": "2026-07-28",
+      "pageViews": 3845,
+      "searchVisits": 2058,
+      "searchImpressions": 34597,
+      "searchCtr": 5.95
+    },
+    {
+      "date": "2026-07-29",
+      "pageViews": 4192,
+      "searchVisits": 1921,
+      "searchImpressions": 37369,
+      "searchCtr": 5.14
+    },
+    {
+      "date": "2026-07-30",
+      "pageViews": 4370,
+      "searchVisits": 2073,
+      "searchImpressions": 35062,
+      "searchCtr": 5.91
+    },
+    {
+      "date": "2026-07-31",
+      "pageViews": 3678,
+      "searchVisits": 1845,
+      "searchImpressions": 32646,
+      "searchCtr": 5.65
+    },
+    {
+      "date": "2026-08-01",
+      "pageViews": 2672,
+      "searchVisits": 1226,
+      "searchImpressions": 22429,
+      "searchCtr": 5.47
+    },
+    {
+      "date": "2026-08-02",
+      "pageViews": 2862,
+      "searchVisits": 1557,
+      "searchImpressions": 23688,
+      "searchCtr": 6.57
+    },
+    {
+      "date": "2026-08-03",
+      "pageViews": 3786,
+      "searchVisits": 2027,
+      "searchImpressions": 34364,
+      "searchCtr": 5.9
+    },
+    {
+      "date": "2026-08-04",
+      "pageViews": 4624,
+      "searchVisits": 2272,
+      "searchImpressions": 31834,
+      "searchCtr": 7.14
+    },
+    {
+      "date": "2026-08-05",
+      "pageViews": 3475,
+      "searchVisits": 1635,
+      "searchImpressions": 24344,
+      "searchCtr": 6.72
+    },
+    {
+      "date": "2026-08-06",
+      "pageViews": 4477,
+      "searchVisits": 2377,
+      "searchImpressions": 38238,
+      "searchCtr": 6.22
+    },
+    {
+      "date": "2026-08-07",
+      "pageViews": 4500,
+      "searchVisits": 2030,
+      "searchImpressions": 28630,
+      "searchCtr": 7.09
+    },
+    {
+      "date": "2026-08-08",
+      "pageViews": 2833,
+      "searchVisits": 1216,
+      "searchImpressions": 21207,
+      "searchCtr": 5.73
+    },
+    {
+      "date": "2026-08-09",
+      "pageViews": 2537,
+      "searchVisits": 1329,
+      "searchImpressions": 22055,
+      "searchCtr": 6.03
+    },
+    {
+      "date": "2026-08-10",
+      "pageViews": 3740,
+      "searchVisits": 1918,
+      "searchImpressions": 26987,
+      "searchCtr": 7.11
+    },
+    {
+      "date": "2026-08-11",
+      "pageViews": 3683,
+      "searchVisits": 1676,
+      "searchImpressions": 30779,
+      "searchCtr": 5.45
+    },
+    {
+      "date": "2026-08-12",
+      "pageViews": 3963,
+      "searchVisits": 2174,
+      "searchImpressions": 43434,
+      "searchCtr": 5.01
+    },
+    {
+      "date": "2026-08-13",
+      "pageViews": 3867,
+      "searchVisits": 1670,
+      "searchImpressions": 25738,
+      "searchCtr": 6.49
+    },
+    {
+      "date": "2026-08-14",
+      "pageViews": 3903,
+      "searchVisits": 1729,
+      "searchImpressions": 33136,
+      "searchCtr": 5.22
+    },
+    {
+      "date": "2026-08-15",
+      "pageViews": 3211,
+      "searchVisits": 1607,
+      "searchImpressions": 25290,
+      "searchCtr": 6.35
+    },
+    {
+      "date": "2026-08-16",
+      "pageViews": 2778,
+      "searchVisits": 1452,
+      "searchImpressions": 28501,
+      "searchCtr": 5.09
+    },
+    {
+      "date": "2026-08-17",
+      "pageViews": 3792,
+      "searchVisits": 1623,
+      "searchImpressions": 24897,
+      "searchCtr": 6.52
+    },
+    {
+      "date": "2026-08-18",
+      "pageViews": 4572,
+      "searchVisits": 2535,
+      "searchImpressions": 44035,
+      "searchCtr": 5.76
+    },
+    {
+      "date": "2026-08-19",
+      "pageViews": 4355,
+      "searchVisits": 2355,
+      "searchImpressions": 38200,
+      "searchCtr": 6.16
+    },
+    {
+      "date": "2026-08-20",
+      "pageViews": 3653,
+      "searchVisits": 1625,
+      "searchImpressions": 23385,
+      "searchCtr": 6.95
+    },
+    {
+      "date": "2026-08-21",
+      "pageViews": 4221,
+      "searchVisits": 1965,
+      "searchImpressions": 28256,
+      "searchCtr": 6.95
+    },
+    {
+      "date": "2026-08-22",
+      "pageViews": 2868,
+      "searchVisits": 1494,
+      "searchImpressions": 27920,
+      "searchCtr": 5.35
+    },
+    {
+      "date": "2026-08-23",
+      "pageViews": 2658,
+      "searchVisits": 1406,
+      "searchImpressions": 25049,
+      "searchCtr": 5.61
+    },
+    {
+      "date": "2026-08-24",
+      "pageViews": 3841,
+      "searchVisits": 2108,
+      "searchImpressions": 30066,
+      "searchCtr": 7.01
+    },
+    {
+      "date": "2026-08-25",
+      "pageViews": 4748,
+      "searchVisits": 2365,
+      "searchImpressions": 39093,
+      "searchCtr": 6.05
+    },
+    {
+      "date": "2026-08-26",
+      "pageViews": 4544,
+      "searchVisits": 1978,
+      "searchImpressions": 29899,
+      "searchCtr": 6.62
+    },
+    {
+      "date": "2026-08-27",
+      "pageViews": 3744,
+      "searchVisits": 2093,
+      "searchImpressions": 38766,
+      "searchCtr": 5.4
+    },
+    {
+      "date": "2026-08-28",
+      "pageViews": 4124,
+      "searchVisits": 2092,
+      "searchImpressions": 36080,
+      "searchCtr": 5.8
+    },
+    {
+      "date": "2026-08-29",
+      "pageViews": 2589,
+      "searchVisits": 1239,
+      "searchImpressions": 24521,
+      "searchCtr": 5.05
+    },
+    {
+      "date": "2026-08-30",
+      "pageViews": 2974,
+      "searchVisits": 1580,
+      "searchImpressions": 26315,
+      "searchCtr": 6
+    },
+    {
+      "date": "2026-08-31",
+      "pageViews": 3782,
+      "searchVisits": 1678,
+      "searchImpressions": 27416,
+      "searchCtr": 6.12
+    },
+    {
+      "date": "2026-09-01",
+      "pageViews": 4082,
+      "searchVisits": 2261,
+      "searchImpressions": 34687,
+      "searchCtr": 6.52
+    },
+    {
+      "date": "2026-09-02",
+      "pageViews": 4416,
+      "searchVisits": 2211,
+      "searchImpressions": 35738,
+      "searchCtr": 6.19
+    },
+    {
+      "date": "2026-09-03",
+      "pageViews": 4044,
+      "searchVisits": 1950,
+      "searchImpressions": 29846,
+      "searchCtr": 6.53
+    },
+    {
+      "date": "2026-09-04",
+      "pageViews": 4760,
+      "searchVisits": 2649,
+      "searchImpressions": 40441,
+      "searchCtr": 6.55
+    },
+    {
+      "date": "2026-09-05",
+      "pageViews": 3190,
+      "searchVisits": 1602,
+      "searchImpressions": 29713,
+      "searchCtr": 5.39
+    },
+    {
+      "date": "2026-09-06",
+      "pageViews": 2774,
+      "searchVisits": 1436,
+      "searchImpressions": 22470,
+      "searchCtr": 6.39
+    },
+    {
+      "date": "2026-09-07",
+      "pageViews": 4780,
+      "searchVisits": 2491,
+      "searchImpressions": 37532,
+      "searchCtr": 6.64
+    },
+    {
+      "date": "2026-09-08",
+      "pageViews": 3717,
+      "searchVisits": 1601,
+      "searchImpressions": 30909,
+      "searchCtr": 5.18
+    },
+    {
+      "date": "2026-09-09",
+      "pageViews": 3856,
+      "searchVisits": 1717,
+      "searchImpressions": 32390,
+      "searchCtr": 5.3
+    },
+    {
+      "date": "2026-09-10",
+      "pageViews": 4453,
+      "searchVisits": 2149,
+      "searchImpressions": 34904,
+      "searchCtr": 6.16
+    },
+    {
+      "date": "2026-09-11",
+      "pageViews": 4765,
+      "searchVisits": 2199,
+      "searchImpressions": 43847,
+      "searchCtr": 5.02
+    },
+    {
+      "date": "2026-09-12",
+      "pageViews": 2828,
+      "searchVisits": 1244,
+      "searchImpressions": 17983,
+      "searchCtr": 6.92
+    },
+    {
+      "date": "2026-09-13",
+      "pageViews": 2868,
+      "searchVisits": 1366,
+      "searchImpressions": 19523,
+      "searchCtr": 7
+    },
+    {
+      "date": "2026-09-14",
+      "pageViews": 4186,
+      "searchVisits": 2048,
+      "searchImpressions": 32661,
+      "searchCtr": 6.27
+    },
+    {
+      "date": "2026-09-15",
+      "pageViews": 4845,
+      "searchVisits": 2600,
+      "searchImpressions": 41400,
+      "searchCtr": 6.28
+    },
+    {
+      "date": "2026-09-16",
+      "pageViews": 4033,
+      "searchVisits": 2166,
+      "searchImpressions": 36210,
+      "searchCtr": 5.98
+    },
+    {
+      "date": "2026-09-17",
+      "pageViews": 4867,
+      "searchVisits": 2672,
+      "searchImpressions": 39630,
+      "searchCtr": 6.74
+    },
+    {
+      "date": "2026-09-18",
+      "pageViews": 4011,
+      "searchVisits": 1968,
+      "searchImpressions": 36929,
+      "searchCtr": 5.33
+    }
+  ],
+  "contents": [
+    {
+      "id": "content-001",
+      "title": "사망보험금 유동화란? 죽기 전에 보험금을 받을 수 있다고?",
+      "url": "/contents/1",
+      "publishedAt": "2026-09-11",
+      "category": "보험정보",
+      "pageViews": 1508,
+      "pageViewsChange": 14.1,
+      "searchVisits": 945,
+      "searchVisitsChange": 0.2,
+      "searchImpressions": 33073,
+      "searchCtr": 2.9,
+      "averageRank": 17.9,
+      "averageTimeSeconds": 230,
+      "diagnosis": "observe",
+      "recommendedAction": "발행 후 데이터가 쌓일 때까지 성과를 관찰한다"
+    },
+    {
+      "id": "content-002",
+      "title": "2026년 자동차보험 치료비 바뀐다",
+      "url": "/contents/2",
+      "publishedAt": "2026-09-11",
+      "category": "보험정보",
+      "pageViews": 15994,
+      "pageViewsChange": -8.8,
+      "searchVisits": 5029,
+      "searchVisitsChange": -18.8,
+      "searchImpressions": 130521,
+      "searchCtr": 3.9,
+      "averageRank": 19.1,
+      "averageTimeSeconds": 182,
+      "diagnosis": "observe",
+      "recommendedAction": "발행 후 데이터가 쌓일 때까지 성과를 관찰한다"
+    },
+    {
+      "id": "content-003",
+      "title": "교보생명 광화문글판이 전하는 한 문장",
+      "url": "/contents/3",
+      "publishedAt": "2026-09-11",
+      "category": "브랜드 스토리",
+      "pageViews": 8792,
+      "pageViewsChange": -16.3,
+      "searchVisits": 6062,
+      "searchVisitsChange": 38.9,
+      "searchImpressions": 173355,
+      "searchCtr": 3.5,
+      "averageRank": 12.7,
+      "averageTimeSeconds": 266,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-004",
+      "title": "신창재 회장이 말하는 경영철학, 원칙과 신뢰",
+      "url": "/contents/4",
+      "publishedAt": "2026-08-22",
+      "category": "인물·경영철학",
+      "pageViews": 16632,
+      "pageViewsChange": 25.6,
+      "searchVisits": 4832,
+      "searchVisitsChange": 36.6,
+      "searchImpressions": 102435,
+      "searchCtr": 4.7,
+      "averageRank": 9.6,
+      "averageTimeSeconds": 160,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-005",
+      "title": "제32회 교보생명 꿈나무 체육대회 현장 스케치",
+      "url": "/contents/5",
+      "publishedAt": "2026-08-18",
+      "category": "사회공헌",
+      "pageViews": 17056,
+      "pageViewsChange": -11.3,
+      "searchVisits": 11764,
+      "searchVisitsChange": 37.5,
+      "searchImpressions": 555462,
+      "searchCtr": 2.1,
+      "averageRank": 5.9,
+      "averageTimeSeconds": 288,
+      "diagnosis": "title_improvement",
+      "recommendedAction": "핵심 검색어를 제목 앞부분에 배치하고 메타디스크립션을 개선한다"
+    },
+    {
+      "id": "content-006",
+      "title": "교보문고와 함께하는 독서경영, 그 시작",
+      "url": "/contents/6",
+      "publishedAt": "2026-08-08",
+      "category": "문화·교육",
+      "pageViews": 3977,
+      "pageViewsChange": 9.3,
+      "searchVisits": 2158,
+      "searchVisitsChange": -14.7,
+      "searchImpressions": 42592,
+      "searchCtr": 5.1,
+      "averageRank": 9.3,
+      "averageTimeSeconds": 239,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-007",
+      "title": "교보생명 3분기 실적 발표, 핵심 요약",
+      "url": "/contents/7",
+      "publishedAt": "2026-06-13",
+      "category": "기업소식",
+      "pageViews": 6570,
+      "pageViewsChange": -5.1,
+      "searchVisits": 1893,
+      "searchVisitsChange": -7.4,
+      "searchImpressions": 61685,
+      "searchCtr": 3.1,
+      "averageRank": 4.6,
+      "averageTimeSeconds": 179,
+      "diagnosis": "maintain",
+      "recommendedAction": "정기적으로 최신 정보 여부를 점검한다"
+    },
+    {
+      "id": "content-008",
+      "title": "평생든든서비스, 무엇이 달라졌나",
+      "url": "/contents/8",
+      "publishedAt": "2026-05-23",
+      "category": "상품·서비스",
+      "pageViews": 17488,
+      "pageViewsChange": 10.6,
+      "searchVisits": 6967,
+      "searchVisitsChange": -25.6,
+      "searchImpressions": 126173,
+      "searchCtr": 5.5,
+      "averageRank": 4,
+      "averageTimeSeconds": 215,
+      "diagnosis": "performance_drop",
+      "recommendedAction": "최신성 점검 및 검색 순위 하락 원인을 확인한다"
+    },
+    {
+      "id": "content-009",
+      "title": "FP가 알려주는 종신보험 가입 전 체크리스트",
+      "url": "/contents/9",
+      "publishedAt": "2026-06-15",
+      "category": "FP 활용 콘텐츠",
+      "pageViews": 17422,
+      "pageViewsChange": -14,
+      "searchVisits": 6604,
+      "searchVisitsChange": 30.3,
+      "searchImpressions": 208803,
+      "searchCtr": 3.2,
+      "averageRank": 19.2,
+      "averageTimeSeconds": 131,
+      "diagnosis": "maintain",
+      "recommendedAction": "정기적으로 최신 정보 여부를 점검한다"
+    },
+    {
+      "id": "content-010",
+      "title": "광화문글판 30년, 시민이 뽑은 최고의 문구",
+      "url": "/contents/10",
+      "publishedAt": "2026-08-01",
+      "category": "브랜드 스토리",
+      "pageViews": 10990,
+      "pageViewsChange": 2,
+      "searchVisits": 3506,
+      "searchVisitsChange": 31.5,
+      "searchImpressions": 148975,
+      "searchCtr": 2.4,
+      "averageRank": 8.9,
+      "averageTimeSeconds": 141,
+      "diagnosis": "title_improvement",
+      "recommendedAction": "핵심 검색어를 제목 앞부분에 배치하고 메타디스크립션을 개선한다"
+    },
+    {
+      "id": "content-011",
+      "title": "교보생명 사회공헌재단, 올해 지원 사업 총정리",
+      "url": "/contents/11",
+      "publishedAt": "2026-06-05",
+      "category": "사회공헌",
+      "pageViews": 5957,
+      "pageViewsChange": 16.9,
+      "searchVisits": 2921,
+      "searchVisitsChange": 25.5,
+      "searchImpressions": 93373,
+      "searchCtr": 3.1,
+      "averageRank": 19.5,
+      "averageTimeSeconds": 256,
+      "diagnosis": "maintain",
+      "recommendedAction": "정기적으로 최신 정보 여부를 점검한다"
+    },
+    {
+      "id": "content-012",
+      "title": "치매보험 가입 시 꼭 확인해야 할 3가지",
+      "url": "/contents/12",
+      "publishedAt": "2026-09-08",
+      "category": "보험정보",
+      "pageViews": 3792,
+      "pageViewsChange": -6.1,
+      "searchVisits": 1323,
+      "searchVisitsChange": -12.8,
+      "searchImpressions": 49708,
+      "searchCtr": 2.7,
+      "averageRank": 12.4,
+      "averageTimeSeconds": 234,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-013",
+      "title": "교보생명 창립 68주년, 그 역사를 되짚다",
+      "url": "/contents/13",
+      "publishedAt": "2026-06-04",
+      "category": "기업소식",
+      "pageViews": 1557,
+      "pageViewsChange": 6.8,
+      "searchVisits": 830,
+      "searchVisitsChange": 36.7,
+      "searchImpressions": 20126,
+      "searchCtr": 4.1,
+      "averageRank": 10.6,
+      "averageTimeSeconds": 119,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-014",
+      "title": "어린이보험 vs 태아보험, 무엇이 다를까",
+      "url": "/contents/14",
+      "publishedAt": "2026-08-02",
+      "category": "상품·서비스",
+      "pageViews": 5129,
+      "pageViewsChange": 27.7,
+      "searchVisits": 3414,
+      "searchVisitsChange": 3.9,
+      "searchImpressions": 75512,
+      "searchCtr": 4.5,
+      "averageRank": 4.3,
+      "averageTimeSeconds": 264,
+      "diagnosis": "maintain",
+      "recommendedAction": "정기적으로 최신 정보 여부를 점검한다"
+    },
+    {
+      "id": "content-015",
+      "title": "FP가 말하는 은퇴 설계의 첫걸음",
+      "url": "/contents/15",
+      "publishedAt": "2026-09-05",
+      "category": "FP 활용 콘텐츠",
+      "pageViews": 2755,
+      "pageViewsChange": -7.2,
+      "searchVisits": 1658,
+      "searchVisitsChange": 19.2,
+      "searchImpressions": 18129,
+      "searchCtr": 9.1,
+      "averageRank": 13,
+      "averageTimeSeconds": 183,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-016",
+      "title": "꼬옥 캐릭터로 보는 교보생명 브랜드 스토리",
+      "url": "/contents/16",
+      "publishedAt": "2026-04-14",
+      "category": "브랜드 스토리",
+      "pageViews": 17940,
+      "pageViewsChange": 29.5,
+      "searchVisits": 11315,
+      "searchVisitsChange": 31.6,
+      "searchImpressions": 352926,
+      "searchCtr": 3.2,
+      "averageRank": 15.6,
+      "averageTimeSeconds": 187,
+      "diagnosis": "maintain",
+      "recommendedAction": "정기적으로 최신 정보 여부를 점검한다"
+    },
+    {
+      "id": "content-017",
+      "title": "신창재 회장, ESG 경영을 말하다",
+      "url": "/contents/17",
+      "publishedAt": "2026-09-16",
+      "category": "인물·경영철학",
+      "pageViews": 3673,
+      "pageViewsChange": 2.9,
+      "searchVisits": 2293,
+      "searchVisitsChange": 3.1,
+      "searchImpressions": 96077,
+      "searchCtr": 2.4,
+      "averageRank": 18.4,
+      "averageTimeSeconds": 93,
+      "diagnosis": "observe",
+      "recommendedAction": "발행 후 데이터가 쌓일 때까지 성과를 관찰한다"
+    },
+    {
+      "id": "content-018",
+      "title": "교보생명 대학생 봉사단 발대식 현장",
+      "url": "/contents/18",
+      "publishedAt": "2026-04-10",
+      "category": "사회공헌",
+      "pageViews": 2977,
+      "pageViewsChange": 2.8,
+      "searchVisits": 1156,
+      "searchVisitsChange": 9.7,
+      "searchImpressions": 52063,
+      "searchCtr": 2.2,
+      "averageRank": 8.9,
+      "averageTimeSeconds": 270,
+      "diagnosis": "content_update",
+      "recommendedAction": "FAQ, 사례 및 최신 정보를 추가한다"
+    },
+    {
+      "id": "content-019",
+      "title": "실손보험 청구 간소화, 이렇게 달라진다",
+      "url": "/contents/19",
+      "publishedAt": "2026-06-21",
+      "category": "보험정보",
+      "pageViews": 14804,
+      "pageViewsChange": 29.9,
+      "searchVisits": 4613,
+      "searchVisitsChange": 39.4,
+      "searchImpressions": 169075,
+      "searchCtr": 2.7,
+      "averageRank": 12,
+      "averageTimeSeconds": 198,
+      "diagnosis": "title_improvement",
+      "recommendedAction": "핵심 검색어를 제목 앞부분에 배치하고 메타디스크립션을 개선한다"
+    },
+    {
+      "id": "content-020",
+      "title": "광화문글판 문안선정위원회는 어떻게 문구를 고를까",
+      "url": "/contents/20",
+      "publishedAt": "2026-08-23",
+      "category": "문화·교육",
+      "pageViews": 7253,
+      "pageViewsChange": 22.6,
+      "searchVisits": 3745,
+      "searchVisitsChange": -23.6,
+      "searchImpressions": 92296,
+      "searchCtr": 4.1,
+      "averageRank": 13.9,
+      "averageTimeSeconds": 256,
+      "diagnosis": "performance_drop",
+      "recommendedAction": "최신성 점검 및 검색 순위 하락 원인을 확인한다"
+    }
+  ]
+}
